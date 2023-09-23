@@ -11,6 +11,7 @@ import by.moiseenko.instagram.storage.PostStorage.PostStorage;
 
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 
 public class PostService {
 
@@ -37,5 +38,9 @@ public class PostService {
 
     public List<Post> findAll() {
         return postStorage.findAll();
+    }
+
+    public Optional<Post> findById(int id) {
+        return postStorage.findById(id);
     }
 }
