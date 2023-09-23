@@ -32,9 +32,9 @@ import java.util.Optional;
 )
 public class RegisterServlet extends HttpServlet {
 
-    private final UserService userService = new UserService();
-    private final CountryService countryService = new CountryService();
-    private final CityService cityService = new CityService();
+    private final UserService userService = UserService.getInstance();
+    private final CountryService countryService = CountryService.getInstance();
+    private final CityService cityService = CityService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -74,6 +74,6 @@ public class RegisterServlet extends HttpServlet {
 
         userService.add(user);
 
-        resp.sendRedirect("/");
+        resp.sendRedirect("/login");
     }
 }
