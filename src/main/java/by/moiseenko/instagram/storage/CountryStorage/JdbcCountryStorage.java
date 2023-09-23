@@ -20,6 +20,8 @@ public class JdbcCountryStorage implements CountryStorage {
     private final String SELECT_ALL = "select * from \"country\"";
     private final String SELECT_BY_ID = "select * from \"country\" where id = ?";
 
+    private JdbcCountryStorage() {}
+
     public static JdbcCountryStorage getInstance() {
         if (instance == null)
             return new JdbcCountryStorage();

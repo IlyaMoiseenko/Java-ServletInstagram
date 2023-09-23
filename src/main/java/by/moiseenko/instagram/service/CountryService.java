@@ -14,7 +14,9 @@ public class CountryService {
 
     private static CountryService instance;
 
-    private final CountryStorage countryStorage = new JdbcCountryStorage();
+    private final CountryStorage countryStorage = JdbcCountryStorage.getInstance();
+
+    private CountryService() {}
 
     public static CountryService getInstance() {
         if (instance == null)

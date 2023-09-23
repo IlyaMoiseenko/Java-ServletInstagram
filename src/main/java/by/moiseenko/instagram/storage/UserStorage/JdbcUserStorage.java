@@ -17,6 +17,8 @@ public class JdbcUserStorage implements UserStorage {
 
     private final String INSERT = "insert into \"human\" (name, surname, username, photo, email, password, countryId, cityId) values (?, ?, ?, ?, ?, ?, ?, ?)";
 
+    private JdbcUserStorage() {}
+
     public static JdbcUserStorage getInstance() {
         if (instance == null)
             return new JdbcUserStorage();

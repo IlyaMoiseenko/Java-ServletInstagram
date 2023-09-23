@@ -15,7 +15,9 @@ public class CityService {
 
     private static CityService instance;
 
-    private final CityStorage cityStorage = new JdbcCityStorage();
+    private final CityStorage cityStorage = JdbcCityStorage.getInstance();
+
+    private CityService() {}
 
     public static CityService getInstance() {
         if (instance == null)

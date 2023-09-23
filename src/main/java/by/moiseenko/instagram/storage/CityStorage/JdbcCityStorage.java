@@ -20,6 +20,8 @@ public class JdbcCityStorage implements CityStorage {
     private final String SELECT_ALL = "select * from \"city\" join \"country\" on \"city\".country_id = \"country\".id";
     private final String SELECT_BY_ID = "select * from \"city\" join \"country\" on \"city\".country_id = \"country\".id where \"city\".id = ?";
 
+    private JdbcCityStorage() {}
+
     public static CityStorage getInstance() {
         if (instance == null)
             return new JdbcCityStorage();

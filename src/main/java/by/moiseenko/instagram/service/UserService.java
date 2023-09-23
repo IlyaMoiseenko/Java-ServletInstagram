@@ -11,7 +11,9 @@ public class UserService {
 
     private static UserService instance;
 
-    private final UserStorage userStorage = new JdbcUserStorage();
+    private final UserStorage userStorage = JdbcUserStorage.getInstance();
+
+    private UserService() {}
 
     public static UserService getInstance() {
         if (instance == null)
