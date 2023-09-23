@@ -34,4 +34,8 @@ public class PostService {
     public List<Post> findAllByUser(User user) {
         return postStorage.findAllByUser(user);
     }
+
+    public List<Post> findAll() {
+        return postStorage.findAll();
+    }
 }

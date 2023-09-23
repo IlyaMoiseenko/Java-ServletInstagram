@@ -1,13 +1,11 @@
 package by.moiseenko.instagram.storage.PostStorage;
 
 import by.moiseenko.instagram.config.JdbcConnection;
+import by.moiseenko.instagram.model.Country;
 import by.moiseenko.instagram.model.Post;
 import by.moiseenko.instagram.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -21,6 +19,7 @@ public class JdbcPostStorage implements PostStorage {
 
     private final String INSERT = "insert into \"post\" (author_id, photo, description) values (?, ?, ?)";
     private final String SELECT_ALL_BY_USER = "select * from \"post\" where author_id = ?";
+    private final String SELECT_ALL = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"country\" on \"human\".country_id = \"country\".id";
 
     private JdbcPostStorage() {}
 
@@ -68,5 +67,46 @@ public class JdbcPostStorage implements PostStorage {
         }
 
         return allPostsByUser;
+    }
+
+    @Override
+    public List<Post> findAll() {
+        List<Post> allPost = new ArrayList<>();
+
+        try (Connection connection = JdbcConnection.getConnection()) {
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL);
+            while (resultSet.next()) {
+                Post post = new Post();
+                post.setId(resultSet.getInt(1));
+                post.setPhoto(Base64.getEncoder().encodeToString(resultSet.getBytes(3)));
+                post.setDescription(resultSet.getString(4));
+
+                User user = new User(
+                        resultSet.getInt(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getString(8),
+                        Base64.getEncoder().encodeToString(resultSet.getBytes(9)),
+                        resultSet.getString(10),
+                        resultSet.getString(11)
+                );
+
+                post.setUser(user);
+
+                Country country = new Country();
+                country.setId(resultSet.getInt(13));
+                country.setName(resultSet.getString(14));
+
+                user.setCountry(country);
+
+                allPost.add(post);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return allPost;
     }
 }

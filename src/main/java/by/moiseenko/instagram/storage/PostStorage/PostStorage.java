@@ -12,4 +12,5 @@ import java.util.List;
 public interface PostStorage {
     void add(Post post);
     List<Post> findAllByUser(User user);
+    List<Post> findAll();
 }
