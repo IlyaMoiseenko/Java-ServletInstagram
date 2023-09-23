@@ -13,22 +13,33 @@
 <body>
 <%@include file="_header.jsp"%>
 
-<div class="container">
-    <h1 class="text-align-center">Create a new post</h1>
+<div class="row justify-content-center">
+    <div class="col-4">
+        <div class="container">
+            <form action="/create-post" method="post" enctype="multipart/form-data">
+                <p class="fs-6">    </p>
 
-    <form method="post" action="/create-post" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="exampleInputPass" class="form-label">Post photo:</label>
-            <input name="photo" type="file" class="form-control" id="exampleInputPass">
+                <h4>
+                    <div class="text-center mb-3" style="width: calc(100% - 0px);">Create new post</div>
+                </h4>
+
+                <div class="input-group flex-nowrap mb-3">
+                    <input name="photo" type="file" class="form-control" placeholder="link" aria-label="link" aria-describedby="addon-wrapping" required>
+                </div>
+
+                <div class="form-floating">
+                    <textarea name="description" class="form-control" placeholder="Leave a description here" id="floatingTextarea" maxlength="2200" required></textarea>
+                    <label for="floatingTextarea">Description</label>
+                </div>
+
+                <p class="fs-6">    </p>
+
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button class="btn btn-primary" type="submit">Create</button>
+                </div>
+            </form>
         </div>
-
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Description:</label>
-            <input name="description" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        </div>
-
-        <button type="submit" class="btn btn-success">Create post</button>
-    </form>
+    </div>
 </div>
 </body>
 </html>

@@ -12,20 +12,45 @@
 </head>
 <body>
 <%@include file="_header.jsp"%>
-    <div class="container">
-        <form method="post" action="/login">
-            <div class="mb-3">
-                <label for="exampleInputPass" class="form-label">Your username:</label>
-                <input name="username" type="text" class="form-control" id="exampleInputPass">
-            </div>
+<div class="row justify-content-center">
+    <div class="col-4">
+        <div class="container">
+            <c:if test="${loginMessage != null}">
+                <div class="alert alert-danger" role="alert">
+                        ${loginMessage}
+                </div>
+            </c:if>
 
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Your password:</label>
-                <input name="password" type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
+            <form action="/login" method="post">
+                <p class="fs-6">    </p>
 
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
+                <div class="mb-3">
+                    <label for="user" class="form-label">Username</label>
+                    <input name="username" type="text" class="form-control" id="user" required pattern="\w*">
+                    <c:if test="${usernameUsed != null}">
+                        <div class="alert alert-danger" role="alert">
+                                ${usernameUsed}
+                        </div>
+                    </c:if>
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+                </div>
+
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button class="btn btn-primary" type="submit">Log In</button>
+                </div>
+
+                <p class="fs-6">    </p>
+
+                <p class="text-body-secondary">
+                    Don`t have an account? <a href="/register">Sign up</a>
+                </p>
+            </form>
+        </div>
     </div>
+</div>
 </body>
 </html>

@@ -16,21 +16,58 @@
 
 </head>
 <body>
-<nav class="navbar bg-body-tertiary">
-    <div class="container-fluid">
-        <a href="/" class="navbar-brand">Instagram</a>
+<nav class="navbar navbar-expand-lg bg-body-tertiary justify-content-center sticky-top" data-bs-theme="dark">
+    <div class="container justify-content-center">
+        <div class="container-fluid d-flex align-items-center">
 
-        <div role="search">
-            <c:if test="${user == null}">
-                <a class="btn btn-success" href="/register">Register</a>
-                <a class="btn btn-success" href="/login">Login</a>
-            </c:if>
+            <a class="navbar-brand fst-italic fw-bolder fs-4" href="/">Photogram</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <c:if test="${sessionScope.user != null}">
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
+                    </c:if>
+                </ul>
 
-            <c:if test="${user != null}">
-                <a class="btn btn-success" href="/profile">Profile</a>
-                <a class="btn btn-success" href="/create-post">Create post</a>
-                <a class="btn btn-danger" href="/logout">Logout</a>
-            </c:if>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <c:if test="${sessionScope.user != null}">
+                        <a class="nav-link" aria-current="page" href="/create-post">Create post</a>
+                    </c:if>
+                </ul>
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <c:if test="${sessionScope.user != null}">
+                        <c:url value="/user/profile" var="profileURL">
+                            <c:param name="username" value="${sessionScope.user.username}"/>
+                        </c:url>
+
+                        <a class="nav-link" aria-current="page" href='<c:out value="${profileURL}" />'>Profile</a>
+                    </c:if>
+                </ul>
+
+
+                <ul class="nav justify-content-end">
+                    <c:if test="${sessionScope.user == null}">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/login">Log in</a>
+                        </li>
+                    </c:if>
+
+                    <c:if test="${sessionScope.user != null}">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/logout">Log out</a>
+                        </li>
+                    </c:if>
+
+                </ul>
+            </div>
         </div>
     </div>
 </nav>
