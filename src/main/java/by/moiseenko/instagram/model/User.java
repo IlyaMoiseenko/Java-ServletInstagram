@@ -17,10 +17,22 @@ public class User {
     private String email;
     private String password;
     private Country country;
+    private City city;
 
     private List<Post> posts;
     private List<Comment> comments;
     private List<Like> likes;
+
+    public User(String name, String surname, String username, String photo, String email, String password, Country country, City city) {
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.photo = photo;
+        this.email = email;
+        this.password = password;
+        this.country = country;
+        this.city = city;
+    }
 
     public int getId() {
         return id;
@@ -108,6 +120,14 @@ public class User {
 
     public void setLikes(List<Like> likes) {
         this.likes = likes;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override
