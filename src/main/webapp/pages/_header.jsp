@@ -11,6 +11,8 @@
 <head>
     <title>Title</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/main.css">
+    <style><%@include file="/static/main.css"%></style>
 
 </head>
 <body>
@@ -25,7 +27,7 @@
             </c:if>
 
             <c:if test="${user != null}">
-                <a class="btn btn-success" href="#">Profile</a>
+                <a class="btn btn-success" href="/profile">Profile</a>
                 <a class="btn btn-success" href="/create-post">Create post</a>
                 <a class="btn btn-danger" href="/logout">Logout</a>
             </c:if>

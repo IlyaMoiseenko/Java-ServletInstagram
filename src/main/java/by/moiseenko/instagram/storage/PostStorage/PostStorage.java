@@ -5,7 +5,11 @@ package by.moiseenko.instagram.storage.PostStorage;
 */
 
 import by.moiseenko.instagram.model.Post;
+import by.moiseenko.instagram.model.User;
+
+import java.util.List;
 
 public interface PostStorage {
     void add(Post post);
+    List<Post> findAllByUser(User user);
 }

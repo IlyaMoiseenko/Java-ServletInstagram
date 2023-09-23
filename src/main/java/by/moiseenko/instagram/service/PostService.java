@@ -5,10 +5,12 @@ package by.moiseenko.instagram.service;
 */
 
 import by.moiseenko.instagram.model.Post;
+import by.moiseenko.instagram.model.User;
 import by.moiseenko.instagram.storage.PostStorage.JdbcPostStorage;
 import by.moiseenko.instagram.storage.PostStorage.PostStorage;
 
 import java.sql.Statement;
+import java.util.List;
 
 public class PostService {
 
@@ -27,5 +29,9 @@ public class PostService {
 
     public void add(Post post) {
         postStorage.add(post);
+    }
+
+    public List<Post> findAllByUser(User user) {
+        return postStorage.findAllByUser(user);
     }
 }

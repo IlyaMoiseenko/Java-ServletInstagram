@@ -9,10 +9,13 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel="stylesheet" href="../static/main.css">
+
 </head>
 <body>
     <%@include file="_header.jsp"%>
 
 
+    <h1 class="home">Home page</h1>
 </body>
 </html>
