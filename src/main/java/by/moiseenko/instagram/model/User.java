@@ -23,6 +23,16 @@ public class User {
     private List<Comment> comments;
     private List<Like> likes;
 
+    public User(int id, String name, String surname, String username, String photo, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.photo = photo;
+        this.email = email;
+        this.password = password;
+    }
+
     public User(String name, String surname, String username, String photo, String email, String password, Country country, City city) {
         this.name = name;
         this.surname = surname;

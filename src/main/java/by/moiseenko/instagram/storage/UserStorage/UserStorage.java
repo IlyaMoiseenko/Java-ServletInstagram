@@ -6,7 +6,10 @@ package by.moiseenko.instagram.storage.UserStorage;
 
 import by.moiseenko.instagram.model.User;
 
+import java.util.Optional;
+
 public interface UserStorage {
 
     void add(User user);
+    Optional<User> getByUsername(String username);
 }
