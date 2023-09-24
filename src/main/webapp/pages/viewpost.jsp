@@ -72,30 +72,25 @@
 
                     <div class="container-sm-5 border-top overflow-y-scroll" style="height: 380px; border-color: black">
                         <ul>
-                            <c:forEach items="${commentList}" var="comment" end="4">
+                            <c:forEach items="${post.getComments()}" var="comment" end="4">
                                 <li>
                                     <div class="container border-bottom mt-2">
                                         <div class="row">
                                             <div class="col-sm-8 align-self-center">
                                                 <div class="row g-0">
-                                                    <a class="page-link col-sm-2 align-self-center text-center"
-                                                       href="/user/profile?username=${requestScope.comment.author.username}"
-                                                       style="padding: unset; text-decoration: unset">
-                                                        <img class="img-fluid rounded-5"
-                                                             src="${requestScope.comment.author.avatar}"
-                                                             style="padding: unset; height: 24px; width: 24px"
-                                                             alt="profile image">
+                                                    <a class="page-link col-sm-2 align-self-center text-center" href="/user/profile?username=${comment.getUser().getUsername()}" style="padding: unset; text-decoration: unset">
+                                                        <img class="img-fluid rounded-5" src="data:image/jpg;base64,${comment.getUser().getPhoto()}" style="padding: unset; height: 24px; width: 24px" alt="profile image">
                                                     </a>
-                                                    <a class="page-link col-sm-2 align-self-center text-center"
-                                                       href="/user/profile?username=${requestScope.comment.author.username}"
-                                                       style="padding: unset; text-decoration: unset">${requestScope.comment.author.username}</a>
+
+                                                    <a class="page-link col-sm-2 align-self-center text-center" href="/user/profile?username=${comment.getUser().getUsername()}" style="padding: unset; text-decoration: unset">${comment.getUser().getUsername()}</a>
                                                 </div>
                                             </div>
+
                                             <div class="col-sm-4 text-end">
-                                                <c:if test="${sessionScope.user.id == requestScope.comment.author.id}">
+                                                <c:if test="${user.getId() == comment.getUser().getId()}">
                                                     <form action="/user/deletecomment" method="post" class="col-sm-6 align-self-center text-center">
-                                                        <input type="hidden" name="postId" value="${requestScope.post.id}">
-                                                        <input type="hidden" name="commentId" value="${comment.id}">
+                                                        <input type="hidden" name="postId" value="${post.getId()}">
+                                                        <input type="hidden" name="commentId" value="${comment.getId()}">
                                                         <button class="btn border-0" type="submit" style="padding: unset">del
                                                         </button>
                                                     </form>
@@ -103,7 +98,7 @@
                                             </div>
                                         </div>
                                         <small>
-                                                ${comment.message}
+                                                ${comment.getText()}
                                         </small>
                                         <div>
                                             <small class="text-body-secondary align-self-end">

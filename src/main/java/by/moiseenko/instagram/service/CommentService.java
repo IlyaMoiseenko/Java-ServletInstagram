@@ -5,8 +5,12 @@ package by.moiseenko.instagram.service;
 */
 
 import by.moiseenko.instagram.model.Comment;
+import by.moiseenko.instagram.model.Post;
 import by.moiseenko.instagram.storage.CommentStorage.CommentStorage;
 import by.moiseenko.instagram.storage.CommentStorage.JdbcCommentStorage;
+
+import java.util.List;
+import java.util.Optional;
 
 public class CommentService {
 
@@ -25,5 +29,9 @@ public class CommentService {
 
     public void add(Comment comment) {
         commentStorage.save(comment);
+    }
+
+    public Optional<List<Comment>> findAllByPost(Post post) {
+        return commentStorage.getAllByPost(post);
     }
 }

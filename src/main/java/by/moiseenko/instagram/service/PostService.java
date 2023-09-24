@@ -4,8 +4,11 @@ package by.moiseenko.instagram.service;
     @author Ilya Moiseenko on 23.09.23
 */
 
+import by.moiseenko.instagram.model.Comment;
 import by.moiseenko.instagram.model.Post;
 import by.moiseenko.instagram.model.User;
+import by.moiseenko.instagram.storage.CommentStorage.CommentStorage;
+import by.moiseenko.instagram.storage.CommentStorage.JdbcCommentStorage;
 import by.moiseenko.instagram.storage.PostStorage.JdbcPostStorage;
 import by.moiseenko.instagram.storage.PostStorage.PostStorage;
 
@@ -18,6 +21,7 @@ public class PostService {
     private static PostService instance;
 
     private final PostStorage postStorage = JdbcPostStorage.getInstance();
+    private final CommentStorage commentStorage = JdbcCommentStorage.getInstance();
 
     private PostService() {}
 
@@ -41,6 +45,22 @@ public class PostService {
     }
 
     public Optional<Post> findById(int id) {
-        return postStorage.findById(id);
+        Optional<Post> postById = postStorage.findById(id);
+
+        if (postById.isPresent()) {
+            Post post = postById.get();
+
+            Optional<List<Comment>> allByPost = commentStorage.getAllByPost(post);
+
+            if (allByPost.isPresent()) {
+                List<Comment> commentList = allByPost.get();
+
+                post.setComments(commentList);
+            }
+
+            return Optional.of(post);
+        }
+
+        return Optional.empty();
     }
 }
