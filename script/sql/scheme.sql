@@ -45,6 +45,7 @@ create table "post_like"(
 create table if not exists "comment" (
     author_id int references "human"(id),
     post_id int references "post"(id),
+    text varchar(250),
 
     constraint comment_pk primary key (author_id, post_id)
 );

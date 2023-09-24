@@ -117,17 +117,14 @@
                     </div>
                 </div>
                 <div class="card-footer" style="height: 70px">
-                    <form action="/user/createcomment" class="row g-2" method="post">
+                    <form action="/user/create-comment" class="row g-2" method="post">
                         <div class="col-sm-11 align-self-center">
-                            <input name="commentMessage" type="text" class="form-control" placeholder="create comment"
-                                   aria-label="create comment" style="height: 50px;">
-                            <input type="hidden" name="postId" value="${requestScope.post.id}">
+                            <input name="commentMessage" type="text" class="form-control" placeholder="create comment" aria-label="create comment" style="height: 50px;">
+                            <input type="hidden" name="post_id" value="${post.getId()}">
                         </div>
                         <div class="col-1 align-self-center">
-                            <button type="submit" class="btn border-0"
-                                    style="padding: unset; --bs-btn-hover-color: blue; transition: 0.3s">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor"
-                                     class="bi bi-arrow-up-right-square-fill" viewBox="0 0 16 16" size="cover">
+                            <button type="submit" class="btn border-0" style="padding: unset; --bs-btn-hover-color: blue; transition: 0.3s">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-arrow-up-right-square-fill" viewBox="0 0 16 16" size="cover">
                                     <path d="M14 0a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12zM5.904 10.803 10 6.707v2.768a.5.5 0 0 0 1 0V5.5a.5.5 0 0 0-.5-.5H6.525a.5.5 0 1 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 .707.707z"></path>
                                 </svg>
                             </button>
