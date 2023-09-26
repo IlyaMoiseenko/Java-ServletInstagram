@@ -20,7 +20,7 @@
     <div class="container justify-content-center">
         <div class="container-fluid d-flex align-items-center">
 
-            <a class="navbar-brand fst-italic fw-bolder fs-4" href="/">Photogram</a>
+            <a class="navbar-brand fst-italic fw-bolder fs-4" href="/">Instagram</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false">
