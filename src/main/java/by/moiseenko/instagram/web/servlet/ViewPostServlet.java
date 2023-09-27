@@ -35,7 +35,7 @@ public class ViewPostServlet extends HttpServlet {
 
             User user = (User) req.getSession().getAttribute("user");
 
-            boolean userLikeStatus = likeService.findByUser(user);
+            boolean userLikeStatus = likeService.findByUserAndPost(user, post);
             if (userLikeStatus)
                 req.setAttribute("like", true);
             else req.setAttribute("like", false);

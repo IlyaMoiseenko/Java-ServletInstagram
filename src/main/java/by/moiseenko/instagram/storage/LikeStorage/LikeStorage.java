@@ -15,5 +15,6 @@ public interface LikeStorage {
 
     int findAllByPost(Post post);
 
-    boolean findByUser(User user);
+    boolean findByUserAndPost(User user, Post post);
+    void removeByUserAndPost(User user, Post post);
 }

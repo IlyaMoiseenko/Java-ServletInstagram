@@ -33,7 +33,11 @@ public class LikeService {
         return likeStorage.findAllByPost(post);
     }
 
-    public boolean findByUser(User user) {
-        return likeStorage.findByUser(user);
+    public boolean findByUserAndPost(User user, Post post) {
+        return likeStorage.findByUserAndPost(user, post);
+    }
+
+    public void removeByUserAndPost(User user, Post post) {
+        likeStorage.removeByUserAndPost(user, post);
     }
 }

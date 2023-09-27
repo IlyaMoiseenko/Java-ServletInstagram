@@ -46,7 +46,8 @@
                             ${likes}
                         </div>
                         <c:if test="${like == false}">
-                            <form action="/post/like" method="post" class="col-sm-1 align-self-center text-center">
+                            <form action="/like" method="post" class="col-sm-1 align-self-center text-center">
+                                <input type="hidden" name="post_id" value="${post.getId()}">
                                 <button type="submit" class="btn border-0" style="padding: unset; --bs-btn-hover-color: red; transition: 0.3s">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-heart-fill object-fit-cover" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"></path>
@@ -55,7 +56,8 @@
                             </form>
                         </c:if>
                         <c:if test="${like == true}">
-                            <form action="/post/unlike" method="post" class="col-sm-1 align-self-center text-center">
+                            <form action="/unlike" method="post" class="col-sm-1 align-self-center text-center">
+                                <input type="hidden" name="post_id" value="${post.getId()}">
                                 <button type="submit" class="btn border-0" style=" --bs-body-color: red; padding: unset; --bs-btn-hover-color: black; transition: 0.3s">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-heart-fill object-fit-cover" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"></path>
