@@ -4,7 +4,10 @@ package by.moiseenko.instagram.web.servlet;
     @author Ilya Moiseenko on 23.09.23
 */
 
+import by.moiseenko.instagram.model.Like;
 import by.moiseenko.instagram.model.Post;
+import by.moiseenko.instagram.model.User;
+import by.moiseenko.instagram.service.LikeService;
 import by.moiseenko.instagram.service.PostService;
 
 import javax.servlet.ServletException;
@@ -19,6 +22,7 @@ import java.util.Optional;
 public class ViewPostServlet extends HttpServlet {
 
     private final PostService postService = PostService.getInstance();
+    private final LikeService likeService = LikeService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,10 +31,19 @@ public class ViewPostServlet extends HttpServlet {
 
         if (postById.isPresent()) {
             Post post = postById.get();
+            int likes = likeService.findAllByPost(post);
+
+            User user = (User) req.getSession().getAttribute("user");
+
+            boolean userLikeStatus = likeService.findByUser(user);
+            if (userLikeStatus)
+                req.setAttribute("like", true);
+            else req.setAttribute("like", false);
 
             req.setAttribute("post", post);
-        }
+            req.setAttribute("likes", likes);
 
-        getServletContext().getRequestDispatcher("/pages/viewpost.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/pages/viewpost.jsp").forward(req, resp);
+        }
     }
 }

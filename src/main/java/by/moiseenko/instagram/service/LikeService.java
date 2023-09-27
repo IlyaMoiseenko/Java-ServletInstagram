@@ -5,6 +5,8 @@ package by.moiseenko.instagram.service;
 */
 
 import by.moiseenko.instagram.model.Like;
+import by.moiseenko.instagram.model.Post;
+import by.moiseenko.instagram.model.User;
 import by.moiseenko.instagram.storage.LikeStorage.JdbcLikeStorage;
 import by.moiseenko.instagram.storage.LikeStorage.LikeStorage;
 
@@ -25,5 +27,13 @@ public class LikeService {
 
     public void save(Like like) {
         likeStorage.save(like);
+    }
+
+    public int findAllByPost(Post post) {
+        return likeStorage.findAllByPost(post);
+    }
+
+    public boolean findByUser(User user) {
+        return likeStorage.findByUser(user);
     }
 }
