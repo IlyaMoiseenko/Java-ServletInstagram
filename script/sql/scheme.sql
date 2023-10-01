@@ -47,3 +47,10 @@ create table if not exists "comment" (
     post_id int references "post"(id),
     text varchar(250)
 );
+
+create table if not exists "followers" (
+    parent_id int references "human"(id),
+    child_id int references "human"(id),
+
+    CONSTRAINT followers_pk PRIMARY KEY(parent_id, child_id)
+)

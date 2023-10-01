@@ -6,6 +6,7 @@ package by.moiseenko.instagram.web.servlet;
 
 import by.moiseenko.instagram.model.Post;
 import by.moiseenko.instagram.model.User;
+import by.moiseenko.instagram.service.FollowersService;
 import by.moiseenko.instagram.service.PostService;
 import by.moiseenko.instagram.service.UserService;
 
@@ -23,6 +24,9 @@ public class ProfileServlet extends HttpServlet {
 
     private final PostService postService = PostService.getInstance();
     private final UserService userService = UserService.getInstance();
+    private final FollowersService followersService = FollowersService.getInstance();
+
+    private boolean isAlreadyFollowed = false;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,8 +39,14 @@ public class ProfileServlet extends HttpServlet {
             List<Post> allByUser = postService.findAllByUser(user);
             req.setAttribute("userPosts", allByUser);
             req.setAttribute("viewedUser", user);
+
+            User parent = (User) req.getSession().getAttribute("user");
+
+            if (followersService.isFollow(parent, user))
+                isAlreadyFollowed = true;
         }
 
+        req.setAttribute("isAlreadyFollowed", isAlreadyFollowed);
 
         getServletContext().getRequestDispatcher("/pages/profile.jsp").forward(req, resp);
     }
