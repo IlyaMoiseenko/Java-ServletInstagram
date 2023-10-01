@@ -10,6 +10,39 @@ public class Like {
     private User user;
     private Post post;
 
+    public LikeBuilder builder() {
+        return new Like.LikeBuilder();
+    }
+
+    public class LikeBuilder {
+
+        private int id;
+        private User user;
+        private Post post;
+
+        public LikeBuilder id(int id) {
+            this.id = id;
+
+            return this;
+        }
+
+        public LikeBuilder user(User user) {
+            this.user = user;
+
+            return this;
+        }
+
+        public LikeBuilder post(Post post) {
+            this.post = post;
+
+            return this;
+        }
+
+        public Like build() {
+            return Like.this;
+        }
+    }
+
     public int getId() {
         return id;
     }

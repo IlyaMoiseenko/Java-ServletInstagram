@@ -15,6 +15,60 @@ public class Post {
     private List<Comment> comments;
     private List<Like> likes;
 
+    public PostBuilder builder() {
+        return new Post.PostBuilder();
+    }
+
+    public class PostBuilder {
+
+        private int id;
+        private User user;
+        private String photo;
+        private String description;
+        private List<Comment> comments;
+        private List<Like> likes;
+
+        public PostBuilder id(int id) {
+            this.id = id;
+
+            return this;
+        }
+
+        public PostBuilder user(User user) {
+            this.user = user;
+
+            return this;
+        }
+
+        public PostBuilder photo(String photo) {
+            this.photo = photo;
+
+            return this;
+        }
+
+        public PostBuilder description(String description) {
+            this.description = description;
+
+            return this;
+        }
+
+        public PostBuilder comments(List<Comment> comments) {
+            this.comments = comments;
+
+            return this;
+        }
+
+        public PostBuilder likes(List<Like> likes) {
+            this.likes = likes;
+
+            return this;
+        }
+
+        public Post build() {
+            return Post.this;
+        }
+    }
+
     public int getId() {
         return id;
     }

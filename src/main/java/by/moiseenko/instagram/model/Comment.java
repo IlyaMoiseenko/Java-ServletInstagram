@@ -5,10 +5,51 @@ package by.moiseenko.instagram.model;
 */
 
 public class Comment {
+
     private int id;
     private User user;
     private Post post;
     private String text;
+
+    public CommentBuilder builder() {
+        return new Comment.CommentBuilder();
+    }
+
+    public class CommentBuilder {
+
+        private int id;
+        private User user;
+        private Post post;
+        private String text;
+
+        public CommentBuilder id(int id) {
+            this.id = id;
+
+            return this;
+        }
+
+        public CommentBuilder user(User user) {
+            this.user = user;
+
+            return this;
+        }
+
+        public CommentBuilder post(Post post) {
+            this.post = post;
+
+            return this;
+        }
+
+        public CommentBuilder text(String text) {
+            this.text = text;
+
+            return this;
+        }
+
+        public Comment build() {
+            return Comment.this;
+        }
+    }
 
     public int getId() {
         return id;
