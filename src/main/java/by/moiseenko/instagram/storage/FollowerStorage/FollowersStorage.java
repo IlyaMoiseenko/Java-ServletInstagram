@@ -10,4 +10,6 @@ public interface FollowersStorage {
     void save(User parent, User child);
     boolean isFollow(User parent, User child);
     void unfollow(User parent, User child);
+    int getFollowersByUser(User user);
+    int getFollowingByUser(User user);
 }

@@ -32,4 +32,12 @@ public class FollowersService {
     public void unfollow(User parent, User child) {
         followerStorage.unfollow(parent, child);
     }
+
+    public int getFollowersByUser(User user) {
+        return followerStorage.getFollowersByUser(user);
+    }
+
+    public int getFollowingByUser(User user) {
+        return followerStorage.getFollowingByUser(user);
+    }
 }

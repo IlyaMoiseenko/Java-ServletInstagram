@@ -27,6 +27,8 @@ public class ProfileServlet extends HttpServlet {
     private final FollowersService followersService = FollowersService.getInstance();
 
     private boolean isAlreadyFollowed = false;
+    private int followersCount = 0;
+    private int followingCount = 0;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,12 +42,17 @@ public class ProfileServlet extends HttpServlet {
             req.setAttribute("userPosts", allByUser);
             req.setAttribute("viewedUser", user);
 
+            followersCount = followersService.getFollowersByUser(user);
+            req.setAttribute("followersCount", followersCount);
+
+            followingCount = followersService.getFollowingByUser(user);
+            req.setAttribute("followingCount", followingCount);
+
             User parent = (User) req.getSession().getAttribute("user");
 
             isAlreadyFollowed = followersService.isFollow(parent, user);
+            req.setAttribute("isAlreadyFollowed", isAlreadyFollowed);
         }
-
-        req.setAttribute("isAlreadyFollowed", isAlreadyFollowed);
 
         getServletContext().getRequestDispatcher("/pages/profile.jsp").forward(req, resp);
     }

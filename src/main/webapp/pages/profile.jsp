@@ -29,8 +29,8 @@
         <div class="col-md">
             <div class="container">
                 <div class="row">
-                    <a class="col" href="#">${requestScope.followersCnt} Followers</a>
-                    <a class="col" href="#">${requestScope.followingCnt} Following</a>
+                    <a class="col" href="#">${followersCount} Followers</a>
+                    <a class="col" href="#">${followingCount} Following</a>
                 </div>
                 <c:if test="${viewedUser.getUsername() != user.getUsername()}">
                     <br>
