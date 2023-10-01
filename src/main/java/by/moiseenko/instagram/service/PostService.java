@@ -63,4 +63,8 @@ public class PostService {
 
         return Optional.empty();
     }
+
+    public Optional<List<Post>> findAllByFollowing(User user) {
+        return postStorage.findAllByFollowing(user);
+    }
 }

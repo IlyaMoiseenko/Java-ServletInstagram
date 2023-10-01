@@ -6,6 +6,7 @@ import by.moiseenko.instagram.model.Post;
 import by.moiseenko.instagram.model.User;
 
 import java.sql.*;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -22,6 +23,7 @@ public class JdbcPostStorage implements PostStorage {
     private final String SELECT_ALL_BY_USER = "select * from \"post\" where author_id = ?";
     private final String SELECT_BY_ID = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"country\" on \"human\".country_id = \"country\".id where \"post\".id = ?";
     private final String SELECT_ALL = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"country\" on \"human\".country_id = \"country\".id";
+    private final String SELECT_ALL_BY_FOLLOWING = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"followers\" on \"human\".id = \"followers\".child_id where \"followers\".parent_id = ?";
 
     private JdbcPostStorage() {}
 
@@ -162,5 +164,44 @@ public class JdbcPostStorage implements PostStorage {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<Post>> findAllByFollowing(User user) {
+        List<Post> allPost = new ArrayList<>();
+
+        try (Connection connection = JdbcConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BY_FOLLOWING);
+            preparedStatement.setInt(1, user.getId());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Post post = Post
+                        .builder()
+                        .id(resultSet.getInt(1))
+                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(3)))
+                        .description(resultSet.getString(4))
+                        .build();
+
+                User author = User
+                        .builder()
+                        .id(resultSet.getInt(5))
+                        .name(resultSet.getString(6))
+                        .surname(resultSet.getString(7))
+                        .username(resultSet.getString(8))
+                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(9)))
+                        .email(resultSet.getString(10))
+                        .password(resultSet.getString(11))
+                        .build();
+
+                post.setUser(author);
+
+                allPost.add(post);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.of(allPost);
     }
 }

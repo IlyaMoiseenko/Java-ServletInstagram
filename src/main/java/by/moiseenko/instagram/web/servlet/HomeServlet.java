@@ -5,6 +5,7 @@ package by.moiseenko.instagram.web.servlet;
 */
 
 import by.moiseenko.instagram.model.Post;
+import by.moiseenko.instagram.model.User;
 import by.moiseenko.instagram.service.PostService;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @WebServlet("/")
 public class HomeServlet extends HttpServlet {
@@ -22,8 +24,18 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Post> all = postService.findAll();
-        req.setAttribute("posts", all);
+        User user = (User) req.getSession().getAttribute("user");
+
+        if (user != null) {
+            Optional<List<Post>> allByFollowing = postService.findAllByFollowing(user);
+
+            if (allByFollowing.isPresent()) {
+                List<Post> posts = allByFollowing.get();
+                req.setAttribute("posts", posts);
+            }
+        } else {
+            req.setAttribute("posts", postService.findAll());
+        }
 
         getServletContext().getRequestDispatcher("/pages/home.jsp").forward(req, resp);
     }

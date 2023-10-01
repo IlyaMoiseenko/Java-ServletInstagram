@@ -15,4 +15,5 @@ public interface PostStorage {
     List<Post> findAllByUser(User user);
     List<Post> findAll();
     Optional<Post> findById(int id);
+    Optional<List<Post>> findAllByFollowing(User user);
 }
