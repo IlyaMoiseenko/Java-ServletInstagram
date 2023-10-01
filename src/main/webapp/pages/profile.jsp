@@ -35,17 +35,22 @@
                 <c:if test="${viewedUser.getUsername() != user.getUsername()}">
                     <br>
                     <div class="row">
-                        <form action="/follow" method="post">
-                            <input type="hidden" value="${viewedUser.getUsername()}" name="child">
-                            <c:choose>
-                                <c:when test="${!isAlreadyFollowed}">
-                                    <input type="submit" value="Follow">
-                                </c:when>
-                                <c:otherwise>
-                                    <input type="submit" value="Unfollow">
-                                </c:otherwise>
-                            </c:choose>
-                        </form>
+                        <c:if test="${isAlreadyFollowed == true}">
+                            <form action="/unfollow" method="post">
+                                <input type="hidden" value="${viewedUser.getUsername()}" name="child">
+
+                                <input type="submit" value="Unfollow">
+                            </form>
+                        </c:if>
+
+                        <c:if test="${isAlreadyFollowed == false}">
+                            <form action="/follow" method="post">
+                                <input type="hidden" value="${viewedUser.getUsername()}" name="child">
+
+                                <input type="submit" value="Follow">
+                            </form>
+                        </c:if>
+
                     </div>
                 </c:if>
             </div>

@@ -42,8 +42,7 @@ public class ProfileServlet extends HttpServlet {
 
             User parent = (User) req.getSession().getAttribute("user");
 
-            if (followersService.isFollow(parent, user))
-                isAlreadyFollowed = true;
+            isAlreadyFollowed = followersService.isFollow(parent, user);
         }
 
         req.setAttribute("isAlreadyFollowed", isAlreadyFollowed);

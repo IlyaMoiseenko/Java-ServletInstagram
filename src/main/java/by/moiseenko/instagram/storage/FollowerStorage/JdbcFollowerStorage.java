@@ -17,6 +17,7 @@ public class JdbcFollowerStorage implements FollowersStorage {
 
     private final String INSERT = "insert into \"followers\" (parent_id, child_id) values (?, ?)";
     private final String SELECT_BY_PARENT_AND_CHILD = "select * from \"followers\" where parent_id = ? and child_id = ?";
+    private final String DELETE_BY_PARENT_AND_CHILD = "delete from \"followers\" where parent_id = ? and child_id = ?";
 
     private JdbcFollowerStorage() {}
 
@@ -54,5 +55,18 @@ public class JdbcFollowerStorage implements FollowersStorage {
         }
 
         return false;
+    }
+
+    @Override
+    public void unfollow(User parent, User child) {
+        try (Connection connection = JdbcConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_PARENT_AND_CHILD);
+            preparedStatement.setInt(1, parent.getId());
+            preparedStatement.setInt(2, child.getId());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

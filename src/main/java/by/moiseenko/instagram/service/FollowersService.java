@@ -28,4 +28,8 @@ public class FollowersService {
     public boolean isFollow(User parent, User child) {
         return followerStorage.isFollow(parent, child);
     }
+
+    public void unfollow(User parent, User child) {
+        followerStorage.unfollow(parent, child);
+    }
 }
