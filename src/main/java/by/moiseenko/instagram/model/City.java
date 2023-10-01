@@ -10,30 +10,30 @@ public class City {
     private String name;
     private Country country;
 
-    public CityBuilder builder() {
-        return new City.CityBuilder();
+    private City() {}
+
+    public static CityBuilder builder() {
+        return new City().new CityBuilder();
     }
 
     public class CityBuilder {
 
-        private int id;
-        private String name;
-        private Country country;
+        private CityBuilder() {}
 
         public CityBuilder id(int id) {
-            this.id = id;
+            City.this.id = id;
 
             return this;
         }
 
         public CityBuilder name(String name) {
-            this.name = name;
+            City.this.name = name;
 
             return this;
         }
 
         public CityBuilder country(Country country) {
-            this.country = country;
+            City.this.country = country;
 
             return this;
         }

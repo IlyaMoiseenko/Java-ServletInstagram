@@ -56,11 +56,13 @@ public class JdbcPostStorage implements PostStorage {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Post post = new Post();
-                post.setId(resultSet.getInt(1));
-                post.setUser(user);
-                post.setPhoto(Base64.getEncoder().encodeToString(resultSet.getBytes(3)));
-                post.setDescription(resultSet.getString(4));
+                Post post = Post
+                        .builder()
+                        .id(resultSet.getInt(1))
+                        .user(user)
+                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(3)))
+                        .description(resultSet.getString(4))
+                        .build();
 
                 allPostsByUser.add(post);
             }
@@ -80,26 +82,31 @@ public class JdbcPostStorage implements PostStorage {
 
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
             while (resultSet.next()) {
-                Post post = new Post();
-                post.setId(resultSet.getInt(1));
-                post.setPhoto(Base64.getEncoder().encodeToString(resultSet.getBytes(3)));
-                post.setDescription(resultSet.getString(4));
+                Post post = Post
+                        .builder()
+                        .id(resultSet.getInt(1))
+                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(3)))
+                        .description(resultSet.getString(4))
+                        .build();
 
-                User user = new User(
-                        resultSet.getInt(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7),
-                        resultSet.getString(8),
-                        Base64.getEncoder().encodeToString(resultSet.getBytes(9)),
-                        resultSet.getString(10),
-                        resultSet.getString(11)
-                );
+                User user = User
+                        .builder()
+                        .id(resultSet.getInt(5))
+                        .name(resultSet.getString(6))
+                        .surname(resultSet.getString(7))
+                        .username(resultSet.getString(8))
+                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(9)))
+                        .email(resultSet.getString(10))
+                        .password(resultSet.getString(11))
+                        .build();
 
                 post.setUser(user);
 
-                Country country = new Country();
-                country.setId(resultSet.getInt(13));
-                country.setName(resultSet.getString(14));
+                Country country = Country
+                        .builder()
+                        .id(resultSet.getInt(13))
+                        .name(resultSet.getString(14))
+                        .build();
 
                 user.setCountry(country);
 
@@ -120,26 +127,31 @@ public class JdbcPostStorage implements PostStorage {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Post post = new Post();
-                post.setId(resultSet.getInt(1));
-                post.setPhoto(Base64.getEncoder().encodeToString(resultSet.getBytes(3)));
-                post.setDescription(resultSet.getString(4));
+                Post post = Post
+                        .builder()
+                        .id(resultSet.getInt(1))
+                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(3)))
+                        .description(resultSet.getString(4))
+                        .build();
 
-                User user = new User(
-                        resultSet.getInt(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7),
-                        resultSet.getString(8),
-                        Base64.getEncoder().encodeToString(resultSet.getBytes(9)),
-                        resultSet.getString(10),
-                        resultSet.getString(11)
-                );
+                User user = User
+                        .builder()
+                        .id(resultSet.getInt(5))
+                        .name(resultSet.getString(6))
+                        .surname(resultSet.getString(7))
+                        .username(resultSet.getString(8))
+                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(9)))
+                        .email(resultSet.getString(10))
+                        .password(resultSet.getString(11))
+                        .build();
 
                 post.setUser(user);
 
-                Country country = new Country();
-                country.setId(resultSet.getInt(13));
-                country.setName(resultSet.getString(14));
+                Country country = Country
+                        .builder()
+                        .id(resultSet.getInt(13))
+                        .name(resultSet.getString(14))
+                        .build();
 
                 user.setCountry(country);
 

@@ -21,6 +21,7 @@ public class JdbcUserStorage implements UserStorage {
 
     private final String INSERT = "insert into \"human\" (name, surname, username, photo, email, password, country_id, city_id) values (?, ?, ?, ?, ?, ?, ?, ?)";
     private final String GET_BY_USERNAME = "select * from \"human\" join \"country\" on \"human\".country_id = \"country\".id join \"city\" on \"human\".city_id = \"city\".id where \"human\".username = ?";
+    private final String UPDATE = "update \"human\" set name = ?, email = ?, password = ?, photo = ? where id = ?";
 
     private JdbcUserStorage() {}
 
@@ -59,23 +60,29 @@ public class JdbcUserStorage implements UserStorage {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                User user = new User(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        Base64.getEncoder().encodeToString(resultSet.getBytes(5)),
-                        resultSet.getString(6),
-                        resultSet.getString(7)
-                );
+                User user = User
+                        .builder()
+                        .id(resultSet.getInt(1))
+                        .name(resultSet.getString(2))
+                        .surname(resultSet.getString(3))
+                        .username(resultSet.getString(4))
+                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(5)))
+                        .email(resultSet.getString(6))
+                        .password(resultSet.getString(7))
+                        .build();
 
-                Country country = new Country();
-                country.setId(resultSet.getInt(10));
-                country.setName(resultSet.getString(11));
+                Country country = Country
+                        .builder()
+                        .id(resultSet.getInt(10))
+                        .name(resultSet.getString(11))
+                        .build();
 
-                City city = new City();
-                city.setId(resultSet.getInt(12));
-                city.setName(resultSet.getString(13));
+                City city = City
+                        .builder()
+                        .id(resultSet.getInt(12))
+                        .name(resultSet.getString(13))
+                        .build();
+
                 city.setCountry(country);
 
                 user.setCountry(country);
@@ -88,5 +95,21 @@ public class JdbcUserStorage implements UserStorage {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public void update(User newUser, User currentUser) {
+        try (Connection connection = JdbcConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement.setString(1, newUser.getName());
+            preparedStatement.setString(2, newUser.getEmail());
+            preparedStatement.setString(3, newUser.getPassword());
+            preparedStatement.setBytes(4, Base64.getDecoder().decode(newUser.getPhoto()));
+            preparedStatement.setInt(5, currentUser.getId());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

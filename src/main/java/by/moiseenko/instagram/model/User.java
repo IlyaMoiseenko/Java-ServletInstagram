@@ -23,71 +23,66 @@ public class User {
     private List<Comment> comments;
     private List<Like> likes;
 
-    public UserBuilder builder() {
-        return new User.UserBuilder();
+    private User() {}
+
+    public static UserBuilder builder() {
+        return new User().new UserBuilder();
     }
 
     public class UserBuilder {
-        private int id;
-        private String name;
-        private String surname;
-        private String username;
-        private String photo;
-        private String email;
-        private String password;
-        private Country country;
-        private City city;
+
+        private UserBuilder() {}
 
         public UserBuilder id(int id) {
-            this.id = id;
+            User.this.id = id;
 
             return this;
         }
 
         public UserBuilder name(String name) {
-            this.name = name;
+            User.this.name = name;
 
             return this;
         }
 
         public UserBuilder surname(String surname) {
-            this.surname = surname;
+            User.this.surname = surname;
 
             return this;
         }
 
         public UserBuilder username(String username) {
-            this.username = username;
+            User.this.username = username;
 
             return this;
         }
 
         public UserBuilder photo(String photo) {
-            this.photo = photo;
+            User.this.photo = photo;
 
             return this;
         }
 
         public UserBuilder email(String email) {
-            this.email = email;
+            User.this.email = email;
 
             return this;
         }
 
         public UserBuilder password(String password) {
-            this.password = password;
+            User.this.password = password;
 
             return this;
         }
 
         public UserBuilder country(Country country) {
-            this.country = country;
+            User.this.country = country;
 
             return this;
         }
 
         public UserBuilder city(City city) {
-            this.city = city;
+            User.this.city = city;
 
             return this;
         }
@@ -95,34 +90,6 @@ public class User {
         public User build() {
             return User.this;
         }
-    }
-
-    public User(int id, String name, String surname, String username, String photo, String email, String password) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.username = username;
-        this.photo = photo;
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(String name, String surname, String username, String photo, String email, String password, Country country, City city) {
-        this.name = name;
-        this.surname = surname;
-        this.username = username;
-        this.photo = photo;
-        this.email = email;
-        this.password = password;
-        this.country = country;
-        this.city = city;
-    }
-
-    public User(String name, String email, String password, String photo) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.photo = photo;
     }
 
     public int getId() {

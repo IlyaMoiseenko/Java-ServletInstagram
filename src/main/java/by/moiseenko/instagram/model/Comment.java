@@ -11,37 +11,36 @@ public class Comment {
     private Post post;
     private String text;
 
-    public CommentBuilder builder() {
-        return new Comment.CommentBuilder();
+    private Comment() {}
+
+    public static CommentBuilder builder() {
+        return new Comment().new CommentBuilder();
     }
 
     public class CommentBuilder {
 
-        private int id;
-        private User user;
-        private Post post;
-        private String text;
+        private CommentBuilder() {}
 
         public CommentBuilder id(int id) {
-            this.id = id;
+            Comment.this.id = id;
 
             return this;
         }
 
         public CommentBuilder user(User user) {
-            this.user = user;
+            Comment.this.user = user;
 
             return this;
         }
 
         public CommentBuilder post(Post post) {
-            this.post = post;
+            Comment.this.post = post;
 
             return this;
         }
 
         public CommentBuilder text(String text) {
-            this.text = text;
+            Comment.this.text = text;
 
             return this;
         }

@@ -58,24 +58,28 @@ public class JdbcCommentStorage implements CommentStorage {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Comment comment = new Comment();
-                comment.setId(resultSet.getInt(1));
-                comment.setPost(post);
-                comment.setText(resultSet.getString(3));
+                Comment comment = Comment
+                        .builder()
+                        .id(resultSet.getInt(1))
+                        .post(post).text(resultSet.getString(3))
+                        .build();
 
-                User user = new User(
-                        resultSet.getInt(4),
-                        resultSet.getString(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7),
-                        Base64.getEncoder().encodeToString(resultSet.getBytes(8)),
-                        resultSet.getString(9),
-                        resultSet.getString(10)
-                );
+                User user = User
+                        .builder()
+                        .id(resultSet.getInt(4))
+                        .name(resultSet.getString(5))
+                        .surname(resultSet.getString(6))
+                        .username(resultSet.getString(7))
+                        .photo(resultSet.getString(8))
+                        .email(resultSet.getString(9))
+                        .password(resultSet.getString(10))
+                        .build();
 
-                Country country = new Country();
-                country.setId(resultSet.getInt(12));
-                country.setName(resultSet.getString(13));
+                Country country = Country
+                        .builder()
+                        .id(resultSet.getInt(12))
+                        .name(resultSet.getString(13))
+                        .build();
 
                 user.setCountry(country);
                 comment.setUser(user);

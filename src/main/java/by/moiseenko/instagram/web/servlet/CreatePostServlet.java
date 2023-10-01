@@ -42,10 +42,7 @@ public class CreatePostServlet extends HttpServlet {
         String description = req.getParameter("description");
         User user = (User) req.getSession().getAttribute("user");
 
-        Post post = new Post();
-        post.setUser(user);
-        post.setDescription(description);
-        post.setPhoto(Base64.getEncoder().encodeToString(photoPartInputStream.readAllBytes()));
+        Post post = Post.builder().user(user).description(description).photo(Base64.getEncoder().encodeToString(photoPartInputStream.readAllBytes())).build();
 
         postService.add(post);
 

@@ -35,10 +35,7 @@ public class CreateCommentServlet extends HttpServlet {
         if (postById.isPresent()) {
             Post post = postById.get();
 
-            Comment comment = new Comment();
-            comment.setPost(post);
-            comment.setUser(user);
-            comment.setText(commentText);
+            Comment comment = Comment.builder().post(post).user(user).text(commentText).build();
 
             commentService.add(comment);
         }

@@ -60,17 +60,17 @@ public class RegisterServlet extends HttpServlet {
         int countryId = Integer.valueOf(req.getParameter("country"));
         int cityId = Integer.valueOf(req.getParameter("city"));
 
-
-        User user = new User(
-                name,
-                surname,
-                username,
-                Base64.getEncoder().encodeToString(photoInputStream.readAllBytes()),
-                email,
-                password,
-                countryService.findById(countryId).get(),
-                cityService.findById(cityId).get()
-        );
+        User user = User
+                .builder()
+                .name(name)
+                .surname(surname)
+                .username(username)
+                .email(email)
+                .password(password)
+                .photo(Base64.getEncoder().encodeToString(photoInputStream.readAllBytes()))
+                .country(countryService.findById(countryId).get())
+                .city(cityService.findById(cityId).get())
+                .build();
 
         userService.add(user);
 

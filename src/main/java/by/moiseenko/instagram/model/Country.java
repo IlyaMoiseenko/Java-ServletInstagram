@@ -12,30 +12,30 @@ public class Country {
     private String name;
     private List<City> cities;
 
-    public CountryBuilder builder() {
-        return new Country.CountryBuilder();
+    private Country() {}
+
+    public static CountryBuilder builder() {
+        return new Country().new CountryBuilder();
     }
 
     public class CountryBuilder {
 
-        private int id;
-        private String name;
-        private List<City> cities;
+        private CountryBuilder() {}
 
         public CountryBuilder id(int id) {
-            this.id = id;
+            Country.this.id = id;
 
             return this;
         }
 
         public CountryBuilder name(String name) {
-            this.name = name;
+            Country.this.name = name;
 
             return this;
         }
 
         public CountryBuilder cities(List<City> cities) {
-            this.cities = cities;
+            Country.this.cities = cities;
 
             return this;
         }

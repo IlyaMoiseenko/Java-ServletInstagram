@@ -38,14 +38,18 @@ public class JdbcCityStorage implements CityStorage {
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
 
             while (resultSet.next()) {
-                City city = new City();
-                city.setId(resultSet.getInt(1));
-                city.setName(resultSet.getString(2));
+                City city = City
+                        .builder()
+                        .id(resultSet.getInt(1))
+                        .name(resultSet.getString(2))
+                        .build();
 
                 // getting country for city
-                Country country = new Country();
-                country.setId(resultSet.getInt(4));
-                country.setName(resultSet.getString(5));
+                Country country = Country
+                        .builder()
+                        .id(resultSet.getInt(4))
+                        .name(resultSet.getString(5))
+                        .build();
 
                 city.setCountry(country);
 
@@ -66,14 +70,18 @@ public class JdbcCityStorage implements CityStorage {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                City city = new City();
-                city.setId(resultSet.getInt(1));
-                city.setName(resultSet.getString(2));
+                City city = City
+                        .builder()
+                        .id(resultSet.getInt(1))
+                        .name(resultSet.getString(2))
+                        .build();
 
                 // getting country for city
-                Country country = new Country();
-                country.setId(resultSet.getInt(4));
-                country.setName(resultSet.getString(5));
+                Country country = Country
+                        .builder()
+                        .id(resultSet.getInt(4))
+                        .name(resultSet.getString(5))
+                        .build();
 
                 city.setCountry(country);
 

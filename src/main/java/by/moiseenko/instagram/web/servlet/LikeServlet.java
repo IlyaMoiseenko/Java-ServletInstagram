@@ -33,9 +33,7 @@ public class LikeServlet extends HttpServlet {
         if (postById.isPresent()) {
             Post post = postById.get();
 
-            Like like = new Like();
-            like.setPost(post);
-            like.setUser(user);
+            Like like = Like.builder().post(post).user(user).build();
 
             likeService.save(like);
         }
