@@ -28,19 +28,19 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <c:if test="${sessionScope.user != null}">
+                    <c:if test="${user != null}">
                         <a class="nav-link" aria-current="page" href="/">Home</a>
                     </c:if>
                 </ul>
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <c:if test="${sessionScope.user != null}">
+                    <c:if test="${user != null}">
                         <a class="nav-link" aria-current="page" href="/create-post">Create post</a>
                     </c:if>
                 </ul>
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <c:if test="${sessionScope.user != null}">
+                    <c:if test="${user != null}">
                         <c:url value="/user/profile" var="profileURL">
                             <c:param name="username" value="${sessionScope.user.username}"/>
                         </c:url>
@@ -51,7 +51,7 @@
 
 
                 <ul class="nav justify-content-end">
-                    <c:if test="${sessionScope.user == null}">
+                    <c:if test="${user == null}">
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="/register">Register</a>
                         </li>
@@ -60,7 +60,7 @@
                         </li>
                     </c:if>
 
-                    <c:if test="${sessionScope.user != null}">
+                    <c:if test="${user != null}">
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="/logout">Log out</a>
                         </li>

@@ -31,4 +31,7 @@ public class UserService {
     public Optional<User> getByUsername(String username) {
         return userStorage.getByUsername(username);
     }
+    public void update(User newUser, User currentUser) {
+        userStorage.update(newUser, currentUser);
+    }
 }

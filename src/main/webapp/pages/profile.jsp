@@ -23,7 +23,7 @@
             <h4>@${viewedUser.getUsername()}</h4>
 
             <c:if test="${viewedUser.getUsername() == user.getUsername()}">
-                <a href="/user/account/edit" class="btn btn-sm btn-danger" role="button" aria-pressed="true">Edit</a>
+                <a href="/edit-profile" class="btn btn-sm btn-danger" role="button" aria-pressed="true">Edit</a>
             </c:if>
         </div>
         <div class="col-md">

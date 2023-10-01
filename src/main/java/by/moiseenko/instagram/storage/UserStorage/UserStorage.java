@@ -12,4 +12,5 @@ public interface UserStorage {
 
     void add(User user);
     Optional<User> getByUsername(String username);
+    void update(User newUser, User currentUser);
 }
