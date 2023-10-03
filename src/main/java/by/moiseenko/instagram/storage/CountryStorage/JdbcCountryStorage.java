@@ -40,8 +40,8 @@ public class JdbcCountryStorage implements CountryStorage {
             while (resultSet.next()) {
                 Country country = Country
                         .builder()
-                        .id(resultSet.getInt(12))
-                        .name(resultSet.getString(13))
+                        .id(resultSet.getInt(1))
+                        .name(resultSet.getString(2))
                         .build();
 
                 countries.add(country);
@@ -63,8 +63,8 @@ public class JdbcCountryStorage implements CountryStorage {
             if (resultSet.next()) {
                 Country country = Country
                         .builder()
-                        .id(resultSet.getInt(12))
-                        .name(resultSet.getString(13))
+                        .id(resultSet.getInt(1))
+                        .name(resultSet.getString(2))
                         .build();
 
                 return Optional.of(country);
