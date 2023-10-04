@@ -32,6 +32,11 @@
                     <label for="floatingTextarea">Description</label>
                 </div>
 
+                <div class="form-floating">
+                    <textarea name="tag" class="form-control" placeholder="#car #test #nature" id="tag" maxlength="2200" required></textarea>
+                    <label for="tag">Tag</label>
+                </div>
+
                 <p class="fs-6">    </p>
 
                 <div class="d-grid gap-2 col-6 mx-auto">

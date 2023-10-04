@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostStorage {
-    void add(Post post);
+    int add(Post post);
     List<Post> findAllByUser(User user);
     List<Post> findAll();
     Optional<Post> findById(int id);

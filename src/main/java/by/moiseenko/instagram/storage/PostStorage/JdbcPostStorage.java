@@ -35,17 +35,25 @@ public class JdbcPostStorage implements PostStorage {
     }
 
     @Override
-    public void add(Post post) {
+    public int add(Post post) {
         try (Connection connection = JdbcConnection.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, post.getUser().getId());
             preparedStatement.setBytes(2, Base64.getDecoder().decode(post.getPhoto()));
             preparedStatement.setString(3, post.getDescription());
 
             preparedStatement.execute();
+
+            try (ResultSet keys = preparedStatement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     @Override

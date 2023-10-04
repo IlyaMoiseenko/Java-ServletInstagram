@@ -72,6 +72,12 @@
                         ${post.getDescription()}
                     </p>
 
+                    <p class="card-text overflow-y-scroll" style="height: 200px">
+                        <c:forEach items="${post.getHashtags()}" var="item">
+                            #${item.getName()}
+                        </c:forEach>
+                    </p>
+
                     <div class="container-sm-5 border-top overflow-y-scroll" style="height: 380px; border-color: black">
                         <ul>
                             <c:forEach items="${post.getComments()}" var="comment" end="4">

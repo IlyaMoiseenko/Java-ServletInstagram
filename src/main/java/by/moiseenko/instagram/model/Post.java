@@ -14,6 +14,7 @@ public class Post {
     private String description;
     private List<Comment> comments;
     private List<Like> likes;
+    private List<Hashtag> hashtags;
 
     private Post() {}
 
@@ -57,6 +58,12 @@ public class Post {
 
         public PostBuilder likes(List<Like> likes) {
             Post.this.likes = likes;
+
+            return this;
+        }
+
+        public PostBuilder hashtags(List<Hashtag> hashtags) {
+            Post.this.hashtags = hashtags;
 
             return this;
         }
@@ -112,6 +119,14 @@ public class Post {
 
     public void setLikes(List<Like> likes) {
         this.likes = likes;
+    }
+
+    public List<Hashtag> getHashtags() {
+        return hashtags;
+    }
+
+    public void setHashtags(List<Hashtag> hashtags) {
+        this.hashtags = hashtags;
     }
 
     @Override

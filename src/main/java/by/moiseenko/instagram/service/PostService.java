@@ -5,12 +5,15 @@ package by.moiseenko.instagram.service;
 */
 
 import by.moiseenko.instagram.model.Comment;
+import by.moiseenko.instagram.model.Hashtag;
 import by.moiseenko.instagram.model.Post;
 import by.moiseenko.instagram.model.User;
 import by.moiseenko.instagram.storage.CommentStorage.CommentStorage;
 import by.moiseenko.instagram.storage.CommentStorage.JdbcCommentStorage;
 import by.moiseenko.instagram.storage.PostStorage.JdbcPostStorage;
 import by.moiseenko.instagram.storage.PostStorage.PostStorage;
+import by.moiseenko.instagram.storage.TagStorage.JdbcTagStorage;
+import by.moiseenko.instagram.storage.TagStorage.TagStorage;
 
 import java.sql.Statement;
 import java.util.List;
@@ -22,6 +25,7 @@ public class PostService {
 
     private final PostStorage postStorage = JdbcPostStorage.getInstance();
     private final CommentStorage commentStorage = JdbcCommentStorage.getInstance();
+    private final TagStorage tagStorage = JdbcTagStorage.getInstance();
 
     private PostService() {}
 
@@ -32,8 +36,8 @@ public class PostService {
         return instance;
     }
 
-    public void add(Post post) {
-        postStorage.add(post);
+    public int add(Post post) {
+        return postStorage.add(post);
     }
 
     public List<Post> findAllByUser(User user) {
@@ -50,13 +54,16 @@ public class PostService {
         if (postById.isPresent()) {
             Post post = postById.get();
 
-            Optional<List<Comment>> allByPost = commentStorage.getAllByPost(post);
+            Optional<List<Comment>> allCommentsByPost = commentStorage.getAllByPost(post);
 
-            if (allByPost.isPresent()) {
-                List<Comment> commentList = allByPost.get();
+            if (allCommentsByPost.isPresent()) {
+                List<Comment> commentList = allCommentsByPost.get();
 
                 post.setComments(commentList);
             }
+
+            List<Hashtag> allHashtagsByPost = tagStorage.findAllByPost(post);
+            post.setHashtags(allHashtagsByPost);
 
             return Optional.of(post);
         }
