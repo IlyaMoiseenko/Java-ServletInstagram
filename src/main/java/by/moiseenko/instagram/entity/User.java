@@ -8,8 +8,6 @@ package by.moiseenko.instagram.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 public class User {
@@ -24,9 +22,9 @@ public class User {
     private Country country;
     private City city;
 
-    private List<Post> posts;
-    private List<Comment> comments;
-    private List<Like> likes;
+    private Iterable<Post> posts;
+    private Iterable<Comment> comments;
+    private Iterable<Like> likes;
 
     private User() {}
 

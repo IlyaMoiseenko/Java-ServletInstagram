@@ -25,7 +25,7 @@ public class ViewPostServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int postId = Integer.valueOf(req.getParameter("id"));
+        Integer postId = Integer.valueOf(req.getParameter("id"));
         Optional<Post> postById = postService.findById(postId);
 
         if (postById.isPresent()) {

@@ -11,8 +11,10 @@ import java.sql.SQLException;
 /*
     @author Ilya Moiseenko on 1.10.23
 */
-public class JdbcFollowerDao implements FollowersDao {
 
+public class JdbcFollowerDao implements FollowersDao<Integer> {
+
+    // Fields
     private static JdbcFollowerDao instance;
 
     private final String INSERT = "insert into \"followers\" (parent_id, child_id) values (?, ?)";
@@ -21,25 +23,35 @@ public class JdbcFollowerDao implements FollowersDao {
     private final String GET_FOLLOWERS_BY_USER = "select count (*) from \"followers\" where child_id = ?";
     private final String GET_FOLLOWING_BY_USER = "select count (*) from \"followers\" where parent_id = ?";
 
+    // Constructors
     private JdbcFollowerDao() {}
 
+    // Methods
     public static JdbcFollowerDao getInstance() {
         if (instance == null)
             instance = new JdbcFollowerDao();
 
         return instance;
     }
+
     @Override
-    public void save(User parent, User child) {
+    public Integer save(User parent, User child) {
         try (Connection connection = JdbcConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setInt(1, parent.getId());
             preparedStatement.setInt(2, child.getId());
 
             preparedStatement.execute();
+
+            try (ResultSet keys = preparedStatement.getGeneratedKeys()) {
+                if (keys.next())
+                    return keys.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     @Override
@@ -73,7 +85,7 @@ public class JdbcFollowerDao implements FollowersDao {
     }
 
     @Override
-    public int getFollowersByUser(User user) {
+    public int getCountFollowersByUser(User user) {
         int countOfFollowers = 0;
 
         try (Connection connection = JdbcConnection.getConnection()) {
@@ -91,7 +103,7 @@ public class JdbcFollowerDao implements FollowersDao {
     }
 
     @Override
-    public int getFollowingByUser(User user) {
+    public int getCountFollowingByUser(User user) {
         int countOfFollowing = 0;
 
         try (Connection connection = JdbcConnection.getConnection()) {

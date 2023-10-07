@@ -2,15 +2,14 @@ package by.moiseenko.instagram.dao.CityDao;
 
 import by.moiseenko.instagram.entity.City;
 
-import java.util.List;
 import java.util.Optional;
 
 /*
     @author Ilya Moiseenko on 23.09.23
 */
 
-public interface CityDao {
+public interface CityDao<ID> {
 
-    List<City> findAll();
-    Optional<City> findById(int id);
+    Iterable<City> findAll();
+    Optional<City> findById(ID id);
 }

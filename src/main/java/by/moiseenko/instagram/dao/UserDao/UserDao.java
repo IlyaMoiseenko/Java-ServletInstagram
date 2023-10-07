@@ -8,9 +8,9 @@ import by.moiseenko.instagram.entity.User;
 
 import java.util.Optional;
 
-public interface UserDao {
+public interface UserDao<ID> {
 
-    void add(User user);
+    ID add(User user);
     Optional<User> getByUsername(String username);
     void update(User newUser, User currentUser);
 }

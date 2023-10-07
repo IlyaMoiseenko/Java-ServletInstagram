@@ -7,8 +7,6 @@ package by.moiseenko.instagram.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 public class Post {
@@ -17,9 +15,9 @@ public class Post {
     private User user;
     private String photo;
     private String description;
-    private List<Comment> comments;
-    private List<Like> likes;
-    private List<Hashtag> hashtags;
+    private Iterable<Comment> comments;
+    private Iterable<Like> likes;
+    private Iterable<Hashtag> hashtags;
 
     private Post() {}
 
@@ -55,19 +53,19 @@ public class Post {
             return this;
         }
 
-        public PostBuilder comments(List<Comment> comments) {
+        public PostBuilder comments(Iterable<Comment> comments) {
             Post.this.comments = comments;
 
             return this;
         }
 
-        public PostBuilder likes(List<Like> likes) {
+        public PostBuilder likes(Iterable<Like> likes) {
             Post.this.likes = likes;
 
             return this;
         }
 
-        public PostBuilder hashtags(List<Hashtag> hashtags) {
+        public PostBuilder hashtags(Iterable<Hashtag> hashtags) {
             Post.this.hashtags = hashtags;
 
             return this;

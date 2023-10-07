@@ -7,13 +7,12 @@ package by.moiseenko.instagram.dao.PostDao;
 import by.moiseenko.instagram.entity.Post;
 import by.moiseenko.instagram.entity.User;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface PostDao {
-    int add(Post post);
-    List<Post> findAllByUser(User user);
-    List<Post> findAll();
-    Optional<Post> findById(int id);
-    Optional<List<Post>> findAllByFollowing(User user);
+public interface PostDao<ID> {
+    ID add(Post post);
+    Iterable<Post> findAllByUser(User user);
+    Iterable<Post> findAll();
+    Optional<Post> findById(ID id);
+    Iterable<Post> findAllByFollowing(User user);
 }

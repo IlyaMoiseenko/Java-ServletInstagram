@@ -21,7 +21,6 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
-import java.util.List;
 
 @WebServlet("/register")
 @MultipartConfig(
@@ -37,8 +36,8 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Country> countries = countryService.findAll();
-        List<City> cities = cityService.findAll();
+        Iterable<Country> countries = countryService.findAll();
+        Iterable<City> cities = cityService.findAll();
 
         req.setAttribute("countries", countries);
         req.setAttribute("cities", cities);
@@ -56,8 +55,8 @@ public class RegisterServlet extends HttpServlet {
         String username = req.getParameter("username");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        int countryId = Integer.valueOf(req.getParameter("country"));
-        int cityId = Integer.valueOf(req.getParameter("city"));
+        Integer countryId = Integer.valueOf(req.getParameter("country"));
+        Integer cityId = Integer.valueOf(req.getParameter("city"));
 
         User user = User
                 .builder()

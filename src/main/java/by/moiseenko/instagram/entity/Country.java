@@ -7,15 +7,13 @@ package by.moiseenko.instagram.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 public class Country {
 
-    private int id;
+    private Integer id;
     private String name;
-    private List<City> cities;
+    private Iterable<City> cities;
 
     private Country() {}
 
@@ -27,7 +25,7 @@ public class Country {
 
         private CountryBuilder() {}
 
-        public CountryBuilder id(int id) {
+        public CountryBuilder id(Integer id) {
             Country.this.id = id;
 
             return this;
@@ -39,7 +37,7 @@ public class Country {
             return this;
         }
 
-        public CountryBuilder cities(List<City> cities) {
+        public CountryBuilder cities(Iterable<City> cities) {
             Country.this.cities = cities;
 
             return this;

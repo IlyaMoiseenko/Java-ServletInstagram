@@ -13,16 +13,19 @@ import java.util.Optional;
     @author Ilya Moiseenko on 23.09.23
 */
 
-public class JdbcCityDao implements CityDao {
+public class JdbcCityDao implements CityDao<Integer> {
 
-    private static CityDao instance;
+    // Fields
+    private static JdbcCityDao instance;
 
     private final String SELECT_ALL = "select * from \"city\" join \"country\" on \"city\".country_id = \"country\".id";
     private final String SELECT_BY_ID = "select * from \"city\" join \"country\" on \"city\".country_id = \"country\".id where \"city\".id = ?";
 
+    // Constructors
     private JdbcCityDao() {}
 
-    public static CityDao getInstance() {
+    // Methods
+    public static JdbcCityDao getInstance() {
         if (instance == null)
             return new JdbcCityDao();
 
@@ -63,27 +66,14 @@ public class JdbcCityDao implements CityDao {
     }
 
     @Override
-    public Optional<City> findById(int id) {
+    public Optional<City> findById(Integer id) {
         try (Connection connection = JdbcConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID);
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                City city = City
-                        .builder()
-                        .id(resultSet.getInt(1))
-                        .name(resultSet.getString(2))
-                        .build();
-
-                // getting country for city
-                Country country = Country
-                        .builder()
-                        .id(resultSet.getInt(4))
-                        .name(resultSet.getString(5))
-                        .build();
-
-                city.setCountry(country);
+                City city = buildCityEntityFromResultSet(resultSet);
 
                 return Optional.of(city);
             }
@@ -92,5 +82,24 @@ public class JdbcCityDao implements CityDao {
         }
 
         return Optional.empty();
+    }
+
+    private City buildCityEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        City city = City
+                .builder()
+                .id(resultSet.getInt(1))
+                .name(resultSet.getString(2))
+                .build();
+
+        // getting country for city
+        Country country = Country
+                .builder()
+                .id(resultSet.getInt(4))
+                .name(resultSet.getString(5))
+                .build();
+
+        city.setCountry(country);
+
+        return city;
     }
 }

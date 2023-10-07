@@ -15,7 +15,7 @@ import java.util.Optional;
 /*
     @author Ilya Moiseenko on 23.09.23
 */
-public class JdbcUserDao implements UserDao {
+public class JdbcUserDao implements UserDao<Integer> {
 
     private static JdbcUserDao instance;
 
@@ -33,7 +33,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public void add(User user) {
+    public Integer add(User user) {
         try (Connection connection = JdbcConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
 
@@ -47,9 +47,16 @@ public class JdbcUserDao implements UserDao {
             preparedStatement.setInt(8, user.getCity().getId());
 
             preparedStatement.execute();
+
+            try (ResultSet keys = preparedStatement.getGeneratedKeys()) {
+                if (keys.next())
+                    return keys.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     @Override
@@ -60,33 +67,7 @@ public class JdbcUserDao implements UserDao {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                User user = User
-                        .builder()
-                        .id(resultSet.getInt(1))
-                        .name(resultSet.getString(2))
-                        .surname(resultSet.getString(3))
-                        .username(resultSet.getString(4))
-                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(5)))
-                        .email(resultSet.getString(6))
-                        .password(resultSet.getString(7))
-                        .build();
-
-                Country country = Country
-                        .builder()
-                        .id(resultSet.getInt(10))
-                        .name(resultSet.getString(11))
-                        .build();
-
-                City city = City
-                        .builder()
-                        .id(resultSet.getInt(12))
-                        .name(resultSet.getString(13))
-                        .build();
-
-                city.setCountry(country);
-
-                user.setCountry(country);
-                user.setCity(city);
+                User user = buildUserEntityFromResultSet(resultSet);
 
                 return Optional.of(user);
             }
@@ -111,5 +92,37 @@ public class JdbcUserDao implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private User buildUserEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        User user = User
+                .builder()
+                .id(resultSet.getInt(1))
+                .name(resultSet.getString(2))
+                .surname(resultSet.getString(3))
+                .username(resultSet.getString(4))
+                .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(5)))
+                .email(resultSet.getString(6))
+                .password(resultSet.getString(7))
+                .build();
+
+        Country country = Country
+                .builder()
+                .id(resultSet.getInt(10))
+                .name(resultSet.getString(11))
+                .build();
+
+        City city = City
+                .builder()
+                .id(resultSet.getInt(12))
+                .name(resultSet.getString(13))
+                .build();
+
+        city.setCountry(country);
+
+        user.setCountry(country);
+        user.setCity(city);
+
+        return user;
     }
 }

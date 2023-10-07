@@ -16,7 +16,7 @@ import java.util.Optional;
     @author Ilya Moiseenko on 4.10.23
 */
 
-public class JdbcTagDao implements TagDao {
+public class JdbcTagDao implements TagDao<Integer> {
 
     private static JdbcTagDao instance;
 
@@ -34,15 +34,22 @@ public class JdbcTagDao implements TagDao {
     }
 
     @Override
-    public void save(Hashtag hashtag) {
+    public Integer save(Hashtag hashtag) {
         try (Connection connection = JdbcConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, hashtag.getName());
 
             preparedStatement.execute();
+
+            try (ResultSet keys = preparedStatement.getGeneratedKeys()) {
+                if (keys.next())
+                    return keys.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     @Override
@@ -53,11 +60,7 @@ public class JdbcTagDao implements TagDao {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Hashtag hashtag = Hashtag
-                        .builder()
-                        .id(resultSet.getInt(1))
-                        .name(resultSet.getString(2))
-                        .build();
+                Hashtag hashtag = buildHashtagEntityFromResultSet(resultSet);
 
                 return Optional.of(hashtag);
             }
@@ -78,7 +81,7 @@ public class JdbcTagDao implements TagDao {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Hashtag hashtag = Hashtag.builder().name(resultSet.getString(2)).build();
+                Hashtag hashtag = buildHashtagEntityFromResultSet(resultSet);
 
                 hashtags.add(hashtag);
             }
@@ -87,5 +90,14 @@ public class JdbcTagDao implements TagDao {
         }
 
         return hashtags;
+    }
+
+    private Hashtag buildHashtagEntityFromResultSet(ResultSet resultSet) throws SQLException {
+
+        return Hashtag
+                .builder()
+                .id(resultSet.getInt(1))
+                .name(resultSet.getString(2))
+                .build();
     }
 }

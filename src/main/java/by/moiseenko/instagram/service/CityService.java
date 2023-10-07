@@ -15,7 +15,7 @@ public class CityService {
 
     private static CityService instance;
 
-    private final CityDao cityDao = JdbcCityDao.getInstance();
+    private final CityDao<Integer> cityDao = JdbcCityDao.getInstance();
 
     private CityService() {}
 
@@ -26,11 +26,11 @@ public class CityService {
         return instance;
     }
 
-    public List<City> findAll() {
+    public Iterable<City> findAll() {
         return cityDao.findAll();
     }
 
-    public Optional<City> findById(int id) {
+    public Optional<City> findById(Integer id) {
         return cityDao.findById(id);
     }
 }

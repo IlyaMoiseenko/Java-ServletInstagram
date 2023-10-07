@@ -7,11 +7,8 @@ package by.moiseenko.instagram.dao.CommentDao;
 import by.moiseenko.instagram.entity.Comment;
 import by.moiseenko.instagram.entity.Post;
 
-import java.util.List;
-import java.util.Optional;
+public interface CommentDao<ID> {
 
-public interface CommentDao {
-
-    void save(Comment comment);
-    Optional<List<Comment>> getAllByPost(Post post);
+    ID save(Comment comment);
+    Iterable<Comment> getAllByPost(Post post);
 }

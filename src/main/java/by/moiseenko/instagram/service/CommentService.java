@@ -16,7 +16,7 @@ public class CommentService {
 
     private static CommentService instance;
 
-    private final CommentDao commentDao = JdbcCommentDao.getInstance();
+    private final CommentDao<Integer> commentDao = JdbcCommentDao.getInstance();
 
     private CommentService() {}
 
@@ -31,7 +31,7 @@ public class CommentService {
         commentDao.save(comment);
     }
 
-    public Optional<List<Comment>> findAllByPost(Post post) {
+    public Iterable<Comment> findAllByPost(Post post) {
         return commentDao.getAllByPost(post);
     }
 }

@@ -13,7 +13,7 @@ public class Hashtag {
 
     private int id;
     private String name;
-    private Post post;
+    private Iterable<Post> posts;
 
     private Hashtag() {}
 
@@ -35,8 +35,8 @@ public class Hashtag {
             return this;
         }
 
-        public HashtagBuilder post(Post post) {
-            Hashtag.this.post = post;
+        public HashtagBuilder post(Iterable<Post> posts) {
+            Hashtag.this.posts = posts;
 
             return this;
         }

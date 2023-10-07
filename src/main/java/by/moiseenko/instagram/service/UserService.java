@@ -13,7 +13,7 @@ public class UserService {
 
     private static UserService instance;
 
-    private final UserDao userDao = JdbcUserDao.getInstance();
+    private final UserDao<Integer> userDao = JdbcUserDao.getInstance();
 
     private UserService() {}
 
@@ -24,8 +24,8 @@ public class UserService {
         return instance;
     }
 
-    public void add(User user) {
-        userDao.add(user);
+    public Integer add(User user) {
+        return userDao.add(user);
     }
 
     public Optional<User> getByUsername(String username) {

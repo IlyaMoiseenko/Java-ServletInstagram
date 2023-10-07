@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @WebServlet("/")
@@ -27,12 +26,9 @@ public class HomeServlet extends HttpServlet {
         User user = (User) req.getSession().getAttribute("user");
 
         if (user != null) {
-            Optional<List<Post>> allByFollowing = postService.findAllByFollowing(user);
+            Iterable<Post> allByFollowing = postService.findAllByFollowing(user);
 
-            if (allByFollowing.isPresent()) {
-                List<Post> posts = allByFollowing.get();
-                req.setAttribute("posts", posts);
-            }
+            req.setAttribute("posts", allByFollowing);
         } else {
             req.setAttribute("posts", postService.findAll());
         }

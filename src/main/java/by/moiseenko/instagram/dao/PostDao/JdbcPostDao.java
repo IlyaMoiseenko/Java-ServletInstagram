@@ -14,18 +14,22 @@ import java.util.Optional;
 /*
     @author Ilya Moiseenko on 23.09.23
 */
-public class JdbcPostDao implements PostDao {
 
+public class JdbcPostDao implements PostDao<Integer> {
+
+    // Fields
     private static JdbcPostDao instance;
 
     private final String INSERT = "insert into \"post\" (author_id, photo, description) values (?, ?, ?)";
     private final String SELECT_ALL_BY_USER = "select * from \"post\" where author_id = ?";
     private final String SELECT_BY_ID = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"country\" on \"human\".country_id = \"country\".id where \"post\".id = ?";
     private final String SELECT_ALL = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"country\" on \"human\".country_id = \"country\".id";
-    private final String SELECT_ALL_BY_FOLLOWING = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"followers\" on \"human\".id = \"followers\".child_id where \"followers\".parent_id = ?";
+    private final String SELECT_ALL_BY_FOLLOWING = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"followers\" on \"human\".id = \"followers\".child_id join \"country\" on \"human\".country_id = \"country\".id where \"followers\".parent_id = ?";
 
+    // Constructors
     private JdbcPostDao() {}
 
+    // Methods
     public static JdbcPostDao getInstance() {
         if (instance == null)
             return new JdbcPostDao();
@@ -34,7 +38,7 @@ public class JdbcPostDao implements PostDao {
     }
 
     @Override
-    public int add(Post post) {
+    public Integer add(Post post) {
         try (Connection connection = JdbcConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, post.getUser().getId());
@@ -65,13 +69,7 @@ public class JdbcPostDao implements PostDao {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Post post = Post
-                        .builder()
-                        .id(resultSet.getInt(1))
-                        .user(user)
-                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(3)))
-                        .description(resultSet.getString(4))
-                        .build();
+                Post post = buildPostEntityFromResultSet(resultSet);
 
                 allPostsByUser.add(post);
             }
@@ -91,33 +89,7 @@ public class JdbcPostDao implements PostDao {
 
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
             while (resultSet.next()) {
-                Post post = Post
-                        .builder()
-                        .id(resultSet.getInt(1))
-                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(3)))
-                        .description(resultSet.getString(4))
-                        .build();
-
-                User user = User
-                        .builder()
-                        .id(resultSet.getInt(5))
-                        .name(resultSet.getString(6))
-                        .surname(resultSet.getString(7))
-                        .username(resultSet.getString(8))
-                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(9)))
-                        .email(resultSet.getString(10))
-                        .password(resultSet.getString(11))
-                        .build();
-
-                post.setUser(user);
-
-                Country country = Country
-                        .builder()
-                        .id(resultSet.getInt(13))
-                        .name(resultSet.getString(14))
-                        .build();
-
-                user.setCountry(country);
+                Post post = buildPostEntityFromResultSet(resultSet);
 
                 allPost.add(post);
             }
@@ -129,40 +101,14 @@ public class JdbcPostDao implements PostDao {
     }
 
     @Override
-    public Optional<Post> findById(int id) {
+    public Optional<Post> findById(Integer id) {
         try (Connection connection = JdbcConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID);
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Post post = Post
-                        .builder()
-                        .id(resultSet.getInt(1))
-                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(3)))
-                        .description(resultSet.getString(4))
-                        .build();
-
-                User user = User
-                        .builder()
-                        .id(resultSet.getInt(5))
-                        .name(resultSet.getString(6))
-                        .surname(resultSet.getString(7))
-                        .username(resultSet.getString(8))
-                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(9)))
-                        .email(resultSet.getString(10))
-                        .password(resultSet.getString(11))
-                        .build();
-
-                post.setUser(user);
-
-                Country country = Country
-                        .builder()
-                        .id(resultSet.getInt(13))
-                        .name(resultSet.getString(14))
-                        .build();
-
-                user.setCountry(country);
+                Post post = buildPostEntityFromResultSet(resultSet);
 
                 return Optional.of(post);
             }
@@ -174,7 +120,7 @@ public class JdbcPostDao implements PostDao {
     }
 
     @Override
-    public Optional<List<Post>> findAllByFollowing(User user) {
+    public List<Post> findAllByFollowing(User user) {
         List<Post> allPost = new ArrayList<>();
 
         try (Connection connection = JdbcConnection.getConnection()) {
@@ -183,25 +129,7 @@ public class JdbcPostDao implements PostDao {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Post post = Post
-                        .builder()
-                        .id(resultSet.getInt(1))
-                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(3)))
-                        .description(resultSet.getString(4))
-                        .build();
-
-                User author = User
-                        .builder()
-                        .id(resultSet.getInt(5))
-                        .name(resultSet.getString(6))
-                        .surname(resultSet.getString(7))
-                        .username(resultSet.getString(8))
-                        .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(9)))
-                        .email(resultSet.getString(10))
-                        .password(resultSet.getString(11))
-                        .build();
-
-                post.setUser(author);
+                Post post = buildPostEntityFromResultSet(resultSet);
 
                 allPost.add(post);
             }
@@ -209,6 +137,38 @@ public class JdbcPostDao implements PostDao {
             e.printStackTrace();
         }
 
-        return Optional.of(allPost);
+        return allPost;
+    }
+
+    private Post buildPostEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        Post post = Post
+                .builder()
+                .id(resultSet.getInt(1))
+                .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(3)))
+                .description(resultSet.getString(4))
+                .build();
+
+        User user = User
+                .builder()
+                .id(resultSet.getInt(5))
+                .name(resultSet.getString(6))
+                .surname(resultSet.getString(7))
+                .username(resultSet.getString(8))
+                .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(9)))
+                .email(resultSet.getString(10))
+                .password(resultSet.getString(11))
+                .build();
+
+        post.setUser(user);
+
+        Country country = Country
+                .builder()
+                .id(resultSet.getInt(13))
+                .name(resultSet.getString(14))
+                .build();
+
+        user.setCountry(country);
+
+        return post;
     }
 }

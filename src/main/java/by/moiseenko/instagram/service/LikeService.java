@@ -14,7 +14,7 @@ public class LikeService {
 
     private static LikeService instance;
 
-    private final LikeDao likeDao = JdbcLikeDao.getInstance();
+    private final LikeDao<Integer> likeDao = JdbcLikeDao.getInstance();
 
     private LikeService() {}
 
@@ -25,8 +25,8 @@ public class LikeService {
         return instance;
     }
 
-    public void save(Like like) {
-        likeDao.save(like);
+    public Integer save(Like like) {
+        return likeDao.save(like);
     }
 
     public int findAllByPost(Post post) {

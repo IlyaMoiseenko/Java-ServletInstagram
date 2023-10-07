@@ -18,7 +18,7 @@ public class TagService {
 
     private static TagService instance;
 
-    private final TagDao tagDao = JdbcTagDao.getInstance();
+    private final TagDao<Integer> tagDao = JdbcTagDao.getInstance();
     private final PostHashTagDao postHashTagDao = JdbcPostHashTagDao.getInstance();
 
     private TagService() {}
@@ -30,7 +30,7 @@ public class TagService {
         return instance;
     }
 
-    public void save(List<Hashtag> hashtags) {
+    public void save(Iterable<Hashtag> hashtags, Post post) {
         for (Hashtag hashtag : hashtags) {
             Optional<Hashtag> hashtagByName = this.findByName(hashtag.getName());
             if (!hashtagByName.isPresent())
@@ -40,7 +40,7 @@ public class TagService {
             if (hashtagForPost.isPresent()) {
                 Hashtag curr = hashtagForPost.get();
 
-                postHashTagDao.add(curr, hashtag.getPost());
+                postHashTagDao.add(curr, post);
             }
         }
     }
@@ -49,7 +49,7 @@ public class TagService {
         return tagDao.findByName(name);
     }
 
-    public List<Hashtag> findAllByPost(Post post) {
+    public Iterable<Hashtag> findAllByPost(Post post) {
         return tagDao.findAllByPost(post);
     }
 }

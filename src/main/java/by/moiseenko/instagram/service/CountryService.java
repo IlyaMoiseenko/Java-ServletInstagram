@@ -4,17 +4,17 @@ import by.moiseenko.instagram.entity.Country;
 import by.moiseenko.instagram.dao.CountryDao.CountryDao;
 import by.moiseenko.instagram.dao.CountryDao.JdbcCountryDao;
 
-import java.util.List;
 import java.util.Optional;
 
 /*
     @author Ilya Moiseenko on 23.09.23
 */
+
 public class CountryService {
 
     private static CountryService instance;
 
-    private final CountryDao countryDao = JdbcCountryDao.getInstance();
+    private final CountryDao<Integer> countryDao = JdbcCountryDao.getInstance();
 
     private CountryService() {}
 
@@ -25,11 +25,11 @@ public class CountryService {
         return instance;
     }
 
-    public List<Country> findAll() {
+    public Iterable<Country> findAll() {
         return countryDao.findAll();
     }
 
-    public Optional<Country> findById(int id) {
+    public Optional<Country> findById(Integer id) {
         return countryDao.findById(id);
     }
 }

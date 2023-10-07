@@ -14,8 +14,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class JdbcLikeDao implements LikeDao {
+public class JdbcLikeDao implements LikeDao<Integer> {
 
+    // Fields
     private static JdbcLikeDao instance;
 
     private final String INSERT  = "insert into \"post_like\" (author_id, post_id) values (?, ?)";
@@ -23,25 +24,35 @@ public class JdbcLikeDao implements LikeDao {
     private final String FIND_BY_USER_AND_POST = "select * from \"post_like\" where author_id = ? and post_id = ?";
     private final String REMOVE_BY_USER_AND_POST = "delete from \"post_like\" where author_id = ? and post_id = ?";
 
+    // Constructors
     private JdbcLikeDao() { }
 
+    // Methods
     public static JdbcLikeDao getInstance() {
         if (instance == null)
             return new JdbcLikeDao();
 
         return instance;
     }
+
     @Override
-    public void save(Like like) {
+    public Integer save(Like like) {
         try (Connection connection = JdbcConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setInt(1, like.getUser().getId());
             preparedStatement.setInt(2, like.getPost().getId());
 
             preparedStatement.execute();
+
+            try (ResultSet keys = preparedStatement.getGeneratedKeys()) {
+                if (keys.next())
+                    return keys.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     @Override

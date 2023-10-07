@@ -1,5 +1,6 @@
 package by.moiseenko.instagram.service;
 
+import by.moiseenko.instagram.dao.FollowerDao.FollowersDao;
 import by.moiseenko.instagram.entity.User;
 import by.moiseenko.instagram.dao.FollowerDao.JdbcFollowerDao;
 
@@ -10,7 +11,7 @@ public class FollowersService {
 
     private static FollowersService instance;
 
-    private final JdbcFollowerDao followerStorage = JdbcFollowerDao.getInstance();
+    private final FollowersDao<Integer> followerStorage = JdbcFollowerDao.getInstance();
 
     private FollowersService() {}
 
@@ -21,8 +22,8 @@ public class FollowersService {
         return instance;
     }
 
-    public void save(User parent, User child) {
-        followerStorage.save(parent, child);
+    public Integer save(User parent, User child) {
+        return followerStorage.save(parent, child);
     }
 
     public boolean isFollow(User parent, User child) {
@@ -34,10 +35,10 @@ public class FollowersService {
     }
 
     public int getFollowersByUser(User user) {
-        return followerStorage.getFollowersByUser(user);
+        return followerStorage.getCountFollowersByUser(user);
     }
 
     public int getFollowingByUser(User user) {
-        return followerStorage.getFollowingByUser(user);
+        return followerStorage.getCountFollowingByUser(user);
     }
 }

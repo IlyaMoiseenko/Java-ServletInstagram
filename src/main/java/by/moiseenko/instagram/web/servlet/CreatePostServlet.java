@@ -55,20 +55,20 @@ public class CreatePostServlet extends HttpServlet {
                 .photo(Base64.getEncoder().encodeToString(photoPartInputStream.readAllBytes()))
                 .build();
 
-        int addedPostId = postService.add(post);
+        Integer addedPostId = postService.add(post);
         if (addedPostId != 0) {
             post.setId(addedPostId);
             post.setHashtags(
-                    createHashtagList(tags, post)
+                    createHashtagList(tags)
             );
 
-            tagService.save(post.getHashtags());
+            tagService.save(post.getHashtags(), post);
         }
 
         resp.sendRedirect("/");
     }
 
-    private List<Hashtag> createHashtagList(String hashtags, Post post) {
+    private List<Hashtag> createHashtagList(String hashtags) {
         List<Hashtag> hashtagList = new ArrayList<>();
 
         hashtags = hashtags.replaceAll("#", "");
@@ -78,7 +78,6 @@ public class CreatePostServlet extends HttpServlet {
             Hashtag hashtag = Hashtag
                     .builder()
                     .name(string)
-                    .post(post)
                     .build();
             hashtagList.add(hashtag);
         }

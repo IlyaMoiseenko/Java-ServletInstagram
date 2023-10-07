@@ -26,7 +26,7 @@ public class CreateCommentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int postId = Integer.valueOf(req.getParameter("post_id"));
+        Integer postId = Integer.valueOf(req.getParameter("post_id"));
         String commentText = req.getParameter("commentMessage");
         User user = (User) req.getSession().getAttribute("user");
 
@@ -34,7 +34,12 @@ public class CreateCommentServlet extends HttpServlet {
         if (postById.isPresent()) {
             Post post = postById.get();
 
-            Comment comment = Comment.builder().post(post).user(user).text(commentText).build();
+            Comment comment = Comment
+                    .builder()
+                    .post(post)
+                    .user(user)
+                    .text(commentText)
+                    .build();
 
             commentService.add(comment);
         }

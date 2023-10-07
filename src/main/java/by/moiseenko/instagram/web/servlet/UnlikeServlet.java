@@ -26,7 +26,7 @@ public class UnlikeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
-        int post_id = Integer.parseInt(req.getParameter("post_id"));
+        Integer post_id = Integer.valueOf(req.getParameter("post_id"));
 
         Optional<Post> postById = postService.findById(post_id);
         if (postById.isPresent()) {

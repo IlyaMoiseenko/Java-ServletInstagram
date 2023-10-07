@@ -7,9 +7,9 @@ import by.moiseenko.instagram.entity.User;
 /*
     @author Ilya Moiseenko on 27.09.23
 */
-public interface LikeDao {
+public interface LikeDao<ID> {
 
-    void save(Like like);
+    ID save(Like like);
 
     int findAllByPost(Post post);
 

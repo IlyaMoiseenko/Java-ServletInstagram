@@ -15,16 +15,15 @@ import by.moiseenko.instagram.dao.PostDao.PostDao;
 import by.moiseenko.instagram.dao.TagDao.JdbcTagDao;
 import by.moiseenko.instagram.dao.TagDao.TagDao;
 
-import java.util.List;
 import java.util.Optional;
 
 public class PostService {
 
     private static PostService instance;
 
-    private final PostDao postDao = JdbcPostDao.getInstance();
-    private final CommentDao commentDao = JdbcCommentDao.getInstance();
-    private final TagDao tagDao = JdbcTagDao.getInstance();
+    private final PostDao<Integer> postDao = JdbcPostDao.getInstance();
+    private final CommentDao<Integer> commentDao = JdbcCommentDao.getInstance();
+    private final TagDao<Integer> tagDao = JdbcTagDao.getInstance();
 
     private PostService() {}
 
@@ -35,33 +34,29 @@ public class PostService {
         return instance;
     }
 
-    public int add(Post post) {
+    public Integer add(Post post) {
         return postDao.add(post);
     }
 
-    public List<Post> findAllByUser(User user) {
+    public Iterable<Post> findAllByUser(User user) {
         return postDao.findAllByUser(user);
     }
 
-    public List<Post> findAll() {
+    public Iterable<Post> findAll() {
         return postDao.findAll();
     }
 
-    public Optional<Post> findById(int id) {
+    public Optional<Post> findById(Integer id) {
         Optional<Post> postById = postDao.findById(id);
 
         if (postById.isPresent()) {
             Post post = postById.get();
 
-            Optional<List<Comment>> allCommentsByPost = commentDao.getAllByPost(post);
+            Iterable<Comment> allCommentsByPost = commentDao.getAllByPost(post);
 
-            if (allCommentsByPost.isPresent()) {
-                List<Comment> commentList = allCommentsByPost.get();
+            post.setComments(allCommentsByPost);
 
-                post.setComments(commentList);
-            }
-
-            List<Hashtag> allHashtagsByPost = tagDao.findAllByPost(post);
+            Iterable<Hashtag> allHashtagsByPost = tagDao.findAllByPost(post);
             post.setHashtags(allHashtagsByPost);
 
             return Optional.of(post);
@@ -70,7 +65,7 @@ public class PostService {
         return Optional.empty();
     }
 
-    public Optional<List<Post>> findAllByFollowing(User user) {
+    public Iterable<Post> findAllByFollowing(User user) {
         return postDao.findAllByFollowing(user);
     }
 }

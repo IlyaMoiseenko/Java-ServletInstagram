@@ -15,26 +15,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
-public class JdbcCommentDao implements CommentDao {
+public class JdbcCommentDao implements CommentDao<Integer> {
 
+    // Fields
     private static JdbcCommentDao instance;
 
     private final String INSERT = "insert into \"comment\" (author_id, post_id, text) values (?, ?, ?)";
-    private final String GET_ALL_BY_POST = "select * from \"comment\" join \"human\" on \"comment\".author_id = \"human\".id join \"country\" on \"human\".country_id = \"country\".id where \"comment\".post_id = ?";
+    private final String GET_ALL_BY_POST = "select * from \"comment\" join \"human\" on \"comment\".author_id = \"human\".id join \"country\" on \"human\".country_id = \"country\".id join \"post\" on \"comment\".post_id = \"post\".id where \"comment\".post_id = ?";
 
+    // Constructors
     private JdbcCommentDao() {}
 
+    // Methods
     public static JdbcCommentDao getInstance() {
         if (instance == null)
             return new JdbcCommentDao();
 
         return instance;
     }
+
     @Override
-    public void save(Comment comment) {
+    public Integer save(Comment comment) {
         try (Connection connection = JdbcConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setInt(1, comment.getUser().getId());
@@ -42,13 +46,20 @@ public class JdbcCommentDao implements CommentDao {
             preparedStatement.setString(3, comment.getText());
 
             preparedStatement.execute();
+
+            try (ResultSet keys = preparedStatement.getGeneratedKeys()) {
+                if (keys.next())
+                    return keys.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     @Override
-    public Optional<List<Comment>> getAllByPost(Post post) {
+    public List<Comment> getAllByPost(Post post) {
         List<Comment> commentList = new ArrayList<>();
 
         try (Connection connection = JdbcConnection.getConnection()) {
@@ -57,31 +68,7 @@ public class JdbcCommentDao implements CommentDao {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Comment comment = Comment
-                        .builder()
-                        .id(resultSet.getInt(1))
-                        .post(post).text(resultSet.getString(3))
-                        .build();
-
-                User user = User
-                        .builder()
-                        .id(resultSet.getInt(4))
-                        .name(resultSet.getString(5))
-                        .surname(resultSet.getString(6))
-                        .username(resultSet.getString(7))
-                        .photo(resultSet.getString(8))
-                        .email(resultSet.getString(9))
-                        .password(resultSet.getString(10))
-                        .build();
-
-                Country country = Country
-                        .builder()
-                        .id(resultSet.getInt(12))
-                        .name(resultSet.getString(13))
-                        .build();
-
-                user.setCountry(country);
-                comment.setUser(user);
+                Comment comment = buildCommentEntityFromResultSet(resultSet);
 
                 commentList.add(comment);
             }
@@ -89,6 +76,43 @@ public class JdbcCommentDao implements CommentDao {
             e.printStackTrace();
         }
 
-        return Optional.of(commentList);
+        return commentList;
+    }
+
+    private Comment buildCommentEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        Comment comment = Comment
+                .builder()
+                .id(resultSet.getInt(1))
+                .build();
+
+        User user = User
+                .builder()
+                .id(resultSet.getInt(4))
+                .name(resultSet.getString(5))
+                .surname(resultSet.getString(6))
+                .username(resultSet.getString(7))
+                .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(8)))
+                .email(resultSet.getString(9))
+                .password(resultSet.getString(10))
+                .build();
+
+        Country country = Country
+                .builder()
+                .id(resultSet.getInt(12))
+                .name(resultSet.getString(13))
+                .build();
+
+        Post post = Post
+                .builder()
+                .id(15)
+                .photo(Base64.getEncoder().encodeToString(resultSet.getBytes(17)))
+                .description(resultSet.getString(18))
+                .build();
+
+        user.setCountry(country);
+        comment.setUser(user);
+        comment.setPost(post);
+
+        return comment;
     }
 }
