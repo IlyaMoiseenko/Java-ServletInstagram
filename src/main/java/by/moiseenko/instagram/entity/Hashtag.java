@@ -4,6 +4,11 @@ package by.moiseenko.instagram.entity;
     @author Ilya Moiseenko on 4.10.23
 */
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Hashtag {
 
     private int id;
@@ -14,30 +19,6 @@ public class Hashtag {
 
     public static HashtagBuilder builder() {
         return new Hashtag().new HashtagBuilder();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
     }
 
     public class HashtagBuilder {

@@ -4,6 +4,11 @@ package by.moiseenko.instagram.entity;
     @author Ilya Moiseenko on 23.09.23
 */
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Like {
 
     private int id;
@@ -41,30 +46,6 @@ public class Like {
         public Like build() {
             return Like.this;
         }
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
     }
 
     @Override

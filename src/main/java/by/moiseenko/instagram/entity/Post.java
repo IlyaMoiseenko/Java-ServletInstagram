@@ -4,8 +4,13 @@ package by.moiseenko.instagram.entity;
     @author Ilya Moiseenko on 23.09.23
 */
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
 public class Post {
 
     private int id;
@@ -71,62 +76,6 @@ public class Post {
         public Post build() {
             return Post.this;
         }
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public List<Like> getLikes() {
-        return likes;
-    }
-
-    public void setLikes(List<Like> likes) {
-        this.likes = likes;
-    }
-
-    public List<Hashtag> getHashtags() {
-        return hashtags;
-    }
-
-    public void setHashtags(List<Hashtag> hashtags) {
-        this.hashtags = hashtags;
     }
 
     @Override

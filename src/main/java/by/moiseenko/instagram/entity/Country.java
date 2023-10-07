@@ -4,8 +4,13 @@ package by.moiseenko.instagram.entity;
     @author Ilya Moiseenko on 23.09.23
 */
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
 public class Country {
 
     private int id;
@@ -43,30 +48,6 @@ public class Country {
         public Country build() {
             return Country.this;
         }
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<City> getCities() {
-        return cities;
-    }
-
-    public void setCities(List<City> cities) {
-        this.cities = cities;
     }
 
     @Override
