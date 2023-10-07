@@ -4,12 +4,12 @@ package by.moiseenko.instagram.service;
     @author Ilya Moiseenko on 4.10.23
 */
 
-import by.moiseenko.instagram.model.Hashtag;
-import by.moiseenko.instagram.model.Post;
-import by.moiseenko.instagram.storage.PostHashtagStorage.JdbcPostHashTagStorage;
-import by.moiseenko.instagram.storage.PostHashtagStorage.PostHashTagStorage;
-import by.moiseenko.instagram.storage.TagStorage.JdbcTagStorage;
-import by.moiseenko.instagram.storage.TagStorage.TagStorage;
+import by.moiseenko.instagram.entity.Hashtag;
+import by.moiseenko.instagram.entity.Post;
+import by.moiseenko.instagram.dao.PostHashtagDao.JdbcPostHashTagDao;
+import by.moiseenko.instagram.dao.PostHashtagDao.PostHashTagDao;
+import by.moiseenko.instagram.dao.TagDao.JdbcTagDao;
+import by.moiseenko.instagram.dao.TagDao.TagDao;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +18,8 @@ public class TagService {
 
     private static TagService instance;
 
-    private final TagStorage tagStorage = JdbcTagStorage.getInstance();
-    private final PostHashTagStorage postHashTagStorage = JdbcPostHashTagStorage.getInstance();
+    private final TagDao tagDao = JdbcTagDao.getInstance();
+    private final PostHashTagDao postHashTagDao = JdbcPostHashTagDao.getInstance();
 
     private TagService() {}
 
@@ -34,22 +34,22 @@ public class TagService {
         for (Hashtag hashtag : hashtags) {
             Optional<Hashtag> hashtagByName = this.findByName(hashtag.getName());
             if (!hashtagByName.isPresent())
-                tagStorage.save(hashtag);
+                tagDao.save(hashtag);
 
             Optional<Hashtag> hashtagForPost = this.findByName(hashtag.getName());
             if (hashtagForPost.isPresent()) {
                 Hashtag curr = hashtagForPost.get();
 
-                postHashTagStorage.add(curr, hashtag.getPost());
+                postHashTagDao.add(curr, hashtag.getPost());
             }
         }
     }
 
     public Optional<Hashtag> findByName(String name) {
-        return tagStorage.findByName(name);
+        return tagDao.findByName(name);
     }
 
     public List<Hashtag> findAllByPost(Post post) {
-        return tagStorage.findAllByPost(post);
+        return tagDao.findAllByPost(post);
     }
 }

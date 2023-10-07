@@ -4,12 +4,11 @@ package by.moiseenko.instagram.web.servlet;
     @author Ilya Moiseenko on 24.09.23
 */
 
-import by.moiseenko.instagram.model.Comment;
-import by.moiseenko.instagram.model.Post;
-import by.moiseenko.instagram.model.User;
+import by.moiseenko.instagram.entity.Comment;
+import by.moiseenko.instagram.entity.Post;
+import by.moiseenko.instagram.entity.User;
 import by.moiseenko.instagram.service.CommentService;
 import by.moiseenko.instagram.service.PostService;
-import by.moiseenko.instagram.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -4,7 +4,7 @@ package by.moiseenko.instagram.web.servlet;
     @author Ilya Moiseenko on 1.10.23
 */
 
-import by.moiseenko.instagram.model.User;
+import by.moiseenko.instagram.entity.User;
 import by.moiseenko.instagram.service.FollowersService;
 import by.moiseenko.instagram.service.UserService;
 

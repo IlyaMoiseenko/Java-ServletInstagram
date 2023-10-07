@@ -4,9 +4,9 @@ package by.moiseenko.instagram.web.servlet;
     @author Ilya Moiseenko on 23.09.23
 */
 
-import by.moiseenko.instagram.model.City;
-import by.moiseenko.instagram.model.Country;
-import by.moiseenko.instagram.model.User;
+import by.moiseenko.instagram.entity.City;
+import by.moiseenko.instagram.entity.Country;
+import by.moiseenko.instagram.entity.User;
 import by.moiseenko.instagram.service.CityService;
 import by.moiseenko.instagram.service.CountryService;
 import by.moiseenko.instagram.service.UserService;
@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
 @WebServlet("/register")
 @MultipartConfig(

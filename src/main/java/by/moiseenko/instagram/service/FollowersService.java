@@ -1,7 +1,7 @@
 package by.moiseenko.instagram.service;
 
-import by.moiseenko.instagram.model.User;
-import by.moiseenko.instagram.storage.FollowerStorage.JdbcFollowerStorage;
+import by.moiseenko.instagram.entity.User;
+import by.moiseenko.instagram.dao.FollowerDao.JdbcFollowerDao;
 
 /*
     @author Ilya Moiseenko on 1.10.23
@@ -10,7 +10,7 @@ public class FollowersService {
 
     private static FollowersService instance;
 
-    private final JdbcFollowerStorage followerStorage = JdbcFollowerStorage.getInstance();
+    private final JdbcFollowerDao followerStorage = JdbcFollowerDao.getInstance();
 
     private FollowersService() {}
 

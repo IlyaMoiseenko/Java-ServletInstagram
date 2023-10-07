@@ -4,17 +4,17 @@ package by.moiseenko.instagram.service;
     @author Ilya Moiseenko on 27.09.23
 */
 
-import by.moiseenko.instagram.model.Like;
-import by.moiseenko.instagram.model.Post;
-import by.moiseenko.instagram.model.User;
-import by.moiseenko.instagram.storage.LikeStorage.JdbcLikeStorage;
-import by.moiseenko.instagram.storage.LikeStorage.LikeStorage;
+import by.moiseenko.instagram.entity.Like;
+import by.moiseenko.instagram.entity.Post;
+import by.moiseenko.instagram.entity.User;
+import by.moiseenko.instagram.dao.LikeDao.JdbcLikeDao;
+import by.moiseenko.instagram.dao.LikeDao.LikeDao;
 
 public class LikeService {
 
     private static LikeService instance;
 
-    private final LikeStorage likeStorage = JdbcLikeStorage.getInstance();
+    private final LikeDao likeDao = JdbcLikeDao.getInstance();
 
     private LikeService() {}
 
@@ -26,18 +26,18 @@ public class LikeService {
     }
 
     public void save(Like like) {
-        likeStorage.save(like);
+        likeDao.save(like);
     }
 
     public int findAllByPost(Post post) {
-        return likeStorage.findAllByPost(post);
+        return likeDao.findAllByPost(post);
     }
 
     public boolean findByUserAndPost(User user, Post post) {
-        return likeStorage.findByUserAndPost(user, post);
+        return likeDao.findByUserAndPost(user, post);
     }
 
     public void removeByUserAndPost(User user, Post post) {
-        likeStorage.removeByUserAndPost(user, post);
+        likeDao.removeByUserAndPost(user, post);
     }
 }

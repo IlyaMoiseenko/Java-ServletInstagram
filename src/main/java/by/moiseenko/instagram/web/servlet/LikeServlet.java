@@ -4,9 +4,9 @@ package by.moiseenko.instagram.web.servlet;
     @author Ilya Moiseenko on 27.09.23
 */
 
-import by.moiseenko.instagram.model.Like;
-import by.moiseenko.instagram.model.Post;
-import by.moiseenko.instagram.model.User;
+import by.moiseenko.instagram.entity.Like;
+import by.moiseenko.instagram.entity.Post;
+import by.moiseenko.instagram.entity.User;
 import by.moiseenko.instagram.service.LikeService;
 import by.moiseenko.instagram.service.PostService;
 

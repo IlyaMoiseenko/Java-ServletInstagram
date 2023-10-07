@@ -4,9 +4,9 @@ package by.moiseenko.instagram.web.servlet;
     @author Ilya Moiseenko on 23.09.23
 */
 
-import by.moiseenko.instagram.model.Hashtag;
-import by.moiseenko.instagram.model.Post;
-import by.moiseenko.instagram.model.User;
+import by.moiseenko.instagram.entity.Hashtag;
+import by.moiseenko.instagram.entity.Post;
+import by.moiseenko.instagram.entity.User;
 import by.moiseenko.instagram.service.PostService;
 import by.moiseenko.instagram.service.TagService;
 
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import javax.swing.text.html.HTML;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;

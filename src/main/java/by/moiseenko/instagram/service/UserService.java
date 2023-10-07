@@ -1,8 +1,8 @@
 package by.moiseenko.instagram.service;
 
-import by.moiseenko.instagram.model.User;
-import by.moiseenko.instagram.storage.UserStorage.JdbcUserStorage;
-import by.moiseenko.instagram.storage.UserStorage.UserStorage;
+import by.moiseenko.instagram.entity.User;
+import by.moiseenko.instagram.dao.UserDao.JdbcUserDao;
+import by.moiseenko.instagram.dao.UserDao.UserDao;
 
 import java.util.Optional;
 
@@ -13,7 +13,7 @@ public class UserService {
 
     private static UserService instance;
 
-    private final UserStorage userStorage = JdbcUserStorage.getInstance();
+    private final UserDao userDao = JdbcUserDao.getInstance();
 
     private UserService() {}
 
@@ -25,13 +25,13 @@ public class UserService {
     }
 
     public void add(User user) {
-        userStorage.add(user);
+        userDao.add(user);
     }
 
     public Optional<User> getByUsername(String username) {
-        return userStorage.getByUsername(username);
+        return userDao.getByUsername(username);
     }
     public void update(User newUser, User currentUser) {
-        userStorage.update(newUser, currentUser);
+        userDao.update(newUser, currentUser);
     }
 }

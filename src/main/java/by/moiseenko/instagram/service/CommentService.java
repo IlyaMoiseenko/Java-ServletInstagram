@@ -4,10 +4,10 @@ package by.moiseenko.instagram.service;
     @author Ilya Moiseenko on 24.09.23
 */
 
-import by.moiseenko.instagram.model.Comment;
-import by.moiseenko.instagram.model.Post;
-import by.moiseenko.instagram.storage.CommentStorage.CommentStorage;
-import by.moiseenko.instagram.storage.CommentStorage.JdbcCommentStorage;
+import by.moiseenko.instagram.entity.Comment;
+import by.moiseenko.instagram.entity.Post;
+import by.moiseenko.instagram.dao.CommentDao.CommentDao;
+import by.moiseenko.instagram.dao.CommentDao.JdbcCommentDao;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,7 @@ public class CommentService {
 
     private static CommentService instance;
 
-    private final CommentStorage commentStorage = JdbcCommentStorage.getInstance();
+    private final CommentDao commentDao = JdbcCommentDao.getInstance();
 
     private CommentService() {}
 
@@ -28,10 +28,10 @@ public class CommentService {
     }
 
     public void add(Comment comment) {
-        commentStorage.save(comment);
+        commentDao.save(comment);
     }
 
     public Optional<List<Comment>> findAllByPost(Post post) {
-        return commentStorage.getAllByPost(post);
+        return commentDao.getAllByPost(post);
     }
 }

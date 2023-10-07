@@ -1,8 +1,8 @@
 package by.moiseenko.instagram.service;
 
-import by.moiseenko.instagram.model.Country;
-import by.moiseenko.instagram.storage.CountryStorage.CountryStorage;
-import by.moiseenko.instagram.storage.CountryStorage.JdbcCountryStorage;
+import by.moiseenko.instagram.entity.Country;
+import by.moiseenko.instagram.dao.CountryDao.CountryDao;
+import by.moiseenko.instagram.dao.CountryDao.JdbcCountryDao;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,7 @@ public class CountryService {
 
     private static CountryService instance;
 
-    private final CountryStorage countryStorage = JdbcCountryStorage.getInstance();
+    private final CountryDao countryDao = JdbcCountryDao.getInstance();
 
     private CountryService() {}
 
@@ -26,10 +26,10 @@ public class CountryService {
     }
 
     public List<Country> findAll() {
-        return countryStorage.findAll();
+        return countryDao.findAll();
     }
 
     public Optional<Country> findById(int id) {
-        return countryStorage.findById(id);
+        return countryDao.findById(id);
     }
 }
