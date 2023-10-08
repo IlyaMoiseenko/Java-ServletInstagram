@@ -6,12 +6,9 @@ package by.moiseenko.instagram.service;
 
 import by.moiseenko.instagram.entity.Hashtag;
 import by.moiseenko.instagram.entity.Post;
-import by.moiseenko.instagram.dao.PostHashtagDao.JdbcPostHashTagDao;
-import by.moiseenko.instagram.dao.PostHashtagDao.PostHashTagDao;
 import by.moiseenko.instagram.dao.TagDao.JdbcTagDao;
 import by.moiseenko.instagram.dao.TagDao.TagDao;
 
-import java.util.List;
 import java.util.Optional;
 
 public class TagService {
@@ -19,7 +16,6 @@ public class TagService {
     private static TagService instance;
 
     private final TagDao<Integer> tagDao = JdbcTagDao.getInstance();
-    private final PostHashTagDao postHashTagDao = JdbcPostHashTagDao.getInstance();
 
     private TagService() {}
 
@@ -40,7 +36,7 @@ public class TagService {
             if (hashtagForPost.isPresent()) {
                 Hashtag curr = hashtagForPost.get();
 
-                postHashTagDao.add(curr, post);
+                tagDao.saveForPost(curr, post);
             }
         }
     }

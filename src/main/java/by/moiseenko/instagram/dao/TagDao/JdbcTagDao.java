@@ -23,6 +23,7 @@ public class JdbcTagDao implements TagDao<Integer> {
     private final String INSERT = "insert into \"hashtag\" (name) values (?)";
     private final String FIND_BY_NAME = "select * from \"hashtag\" where name = ?";
     private final String FIND_ALL_BY_POST = "select * from \"hashtag\" join \"post_hashtag\" on \"hashtag\".id = \"post_hashtag\".hashtag_id where \"post_hashtag\".post_id = ?";
+    private final String SAVE_FOR_POST = "insert into \"post_hashtag\" (hashtag_id, post_id) values (?, ?)";
 
     private JdbcTagDao() {}
 
@@ -90,6 +91,26 @@ public class JdbcTagDao implements TagDao<Integer> {
         }
 
         return hashtags;
+    }
+
+    @Override
+    public Optional<Integer> saveForPost(Hashtag hashtag, Post post) {
+        try (Connection connection = JdbcConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SAVE_FOR_POST);
+            preparedStatement.setInt(1, hashtag.getId());
+            preparedStatement.setInt(2, post.getId());
+
+            preparedStatement.execute();
+
+            try (ResultSet keys = preparedStatement.getGeneratedKeys()) {
+                if (keys.next())
+                    return Optional.of(keys.getInt(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
     }
 
     private Hashtag buildHashtagEntityFromResultSet(ResultSet resultSet) throws SQLException {

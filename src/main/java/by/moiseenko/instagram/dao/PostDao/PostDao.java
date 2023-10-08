@@ -10,7 +10,7 @@ import by.moiseenko.instagram.entity.User;
 import java.util.Optional;
 
 public interface PostDao<ID> {
-    ID add(Post post);
+    Optional<ID> add(Post post);
     Iterable<Post> findAllByUser(User user);
     Iterable<Post> findAll();
     Optional<Post> findById(ID id);

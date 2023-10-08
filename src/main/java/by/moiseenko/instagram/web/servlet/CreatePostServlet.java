@@ -4,6 +4,7 @@ package by.moiseenko.instagram.web.servlet;
     @author Ilya Moiseenko on 23.09.23
 */
 
+import by.moiseenko.instagram.adapter.HashtagAdapter;
 import by.moiseenko.instagram.entity.Hashtag;
 import by.moiseenko.instagram.entity.Post;
 import by.moiseenko.instagram.entity.User;
@@ -22,6 +23,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @WebServlet("/create-post")
 @MultipartConfig(
@@ -30,6 +32,8 @@ import java.util.List;
         maxRequestSize = 1024 * 1024 * 5 * 5
 )
 public class CreatePostServlet extends HttpServlet {
+
+    private final HashtagAdapter hashtagAdapter = new HashtagAdapter();
 
     private final PostService postService = PostService.getInstance();
     private final TagService tagService = TagService.getInstance();
@@ -55,33 +59,17 @@ public class CreatePostServlet extends HttpServlet {
                 .photo(Base64.getEncoder().encodeToString(photoPartInputStream.readAllBytes()))
                 .build();
 
-        Integer addedPostId = postService.add(post);
-        if (addedPostId != 0) {
-            post.setId(addedPostId);
+        Optional<Integer> addedPostId = postService.add(post);
+        if (addedPostId.isPresent()) {
+            Integer postId = addedPostId.get();
+            post.setId(postId);
             post.setHashtags(
-                    createHashtagList(tags)
+                    hashtagAdapter.converToList(tags)
             );
 
             tagService.save(post.getHashtags(), post);
         }
 
         resp.sendRedirect("/");
-    }
-
-    private List<Hashtag> createHashtagList(String hashtags) {
-        List<Hashtag> hashtagList = new ArrayList<>();
-
-        hashtags = hashtags.replaceAll("#", "");
-        String[] s = hashtags.split(" ");
-
-        for (String string : s) {
-            Hashtag hashtag = Hashtag
-                    .builder()
-                    .name(string)
-                    .build();
-            hashtagList.add(hashtag);
-        }
-
-        return hashtagList;
     }
 }

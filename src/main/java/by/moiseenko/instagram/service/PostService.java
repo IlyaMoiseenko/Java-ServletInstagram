@@ -34,7 +34,7 @@ public class PostService {
         return instance;
     }
 
-    public Integer add(Post post) {
+    public Optional<Integer> add(Post post) {
         return postDao.add(post);
     }
 
