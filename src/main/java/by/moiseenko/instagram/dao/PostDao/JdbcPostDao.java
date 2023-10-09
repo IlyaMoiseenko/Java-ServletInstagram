@@ -21,7 +21,7 @@ public class JdbcPostDao implements PostDao<Integer> {
     private static JdbcPostDao instance;
 
     private final String INSERT = "insert into \"post\" (author_id, photo, description) values (?, ?, ?)";
-    private final String SELECT_ALL_BY_USER = "select * from \"post\" where author_id = ?";
+    private final String SELECT_ALL_BY_USER = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"country\" on \"human\".country_id = \"country\".id where \"post\".author_id = ?";
     private final String SELECT_BY_ID = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"country\" on \"human\".country_id = \"country\".id where \"post\".id = ?";
     private final String SELECT_ALL = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"country\" on \"human\".country_id = \"country\".id";
     private final String SELECT_ALL_BY_FOLLOWING = "select * from \"post\" join \"human\" on \"post\".author_id = \"human\".id join \"followers\" on \"human\".id = \"followers\".child_id join \"country\" on \"human\".country_id = \"country\".id where \"followers\".parent_id = ?";
