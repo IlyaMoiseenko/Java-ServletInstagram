@@ -27,8 +27,10 @@ public class HomeServlet extends HttpServlet {
 
         if (user != null) {
             Iterable<Post> allByFollowing = postService.findAllByFollowing(user);
+            Iterable<Post> allUserPosts = postService.findAll();
 
             req.setAttribute("posts", allByFollowing);
+            req.setAttribute("allPosts", allUserPosts);
         } else {
             req.setAttribute("posts", postService.findAll());
         }
