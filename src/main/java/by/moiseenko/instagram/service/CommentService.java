@@ -34,4 +34,8 @@ public class CommentService {
     public Iterable<Comment> findAllByPost(Post post) {
         return commentDao.getAllByPost(post);
     }
+
+    public void removeById(Integer id) {
+        commentDao.removeById(id);
+    }
 }

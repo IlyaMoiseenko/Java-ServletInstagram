@@ -11,4 +11,5 @@ public interface CommentDao<ID> {
 
     ID save(Comment comment);
     Iterable<Comment> getAllByPost(Post post);
+    void removeById(ID id);
 }

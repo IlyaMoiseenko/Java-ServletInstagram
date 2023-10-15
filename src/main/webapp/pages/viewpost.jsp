@@ -97,8 +97,8 @@
                                             <div class="col-sm-4 text-end">
                                                 <c:if test="${user.getId() == comment.getUser().getId()}">
                                                     <form action="/user/deletecomment" method="post" class="col-sm-6 align-self-center text-center">
-                                                        <input type="hidden" name="postId" value="${post.getId()}">
-                                                        <input type="hidden" name="commentId" value="${comment.getId()}">
+                                                        <input type="hidden" name="post_id" value="${post.getId()}">
+                                                        <input type="hidden" name="comment_id" value="${comment.getId()}">
                                                         <button class="btn border-0" type="submit" style="padding: unset">del
                                                         </button>
                                                     </form>
